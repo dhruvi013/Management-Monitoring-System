@@ -8,35 +8,58 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
-// expecting array of student ids
-$ids = $_POST['student_ids'] ?? [];
-if (!is_array($ids) || count($ids) === 0) {
-    header("Location: ../frontend/index.php?msg=" . urlencode("No students selected for transfer") . "&type=error");
+$batch = trim($_POST['batch'] ?? '');
+$action = trim($_POST['action'] ?? '');  // "transfer" or "no_transfer"
+
+if ($batch === '') {
+    header("Location: ../frontend/index.php?msg=" . urlencode("Please select a batch") . "&type=error");
     exit;
 }
 
-$ids = array_map('intval', $ids);
+if ($action !== "transfer" && $action !== "no_transfer") {
+    header("Location: ../frontend/index.php?msg=" . urlencode("Invalid action selected") . "&type=error");
+    exit;
+}
 
 try {
+    if ($action === "no_transfer") {
+        // ❌ User chose not to transfer — do nothing
+        header("Location: ../frontend/index.php?msg=" . urlencode("Students NOT transferred. Batch remains unchanged.") . "&type=success");
+        exit;
+    }
+
+    // ✔ User selected TRANSFER — we auto-increment academic years
     $pdo->beginTransaction();
 
-    $select = $pdo->prepare("SELECT id, academic_year FROM students WHERE id = :id FOR UPDATE");
-    $update = $pdo->prepare("UPDATE students SET academic_year = :ny WHERE id = :id");
+    // Get all students in this batch
+    $select = $pdo->prepare("SELECT id, academic_year FROM students WHERE batch = :batch FOR UPDATE");
+    $select->execute([':batch' => $batch]);
+    $students = $select->fetchAll();
 
-    foreach ($ids as $id) {
-        $select->execute([':id' => $id]);
-        $row = $select->fetch();
-        if (!$row) continue;
+    if (empty($students)) {
+        $pdo->rollBack();
+        header("Location: ../frontend/index.php?msg=" . urlencode("No students found in this batch") . "&type=error");
+        exit;
+    }
 
-        $current = $row['academic_year'];
+    $update = $pdo->prepare("UPDATE students SET academic_year = :ay WHERE id = :id");
+
+    foreach ($students as $stu) {
+        $current = $stu['academic_year'];
         $next = increment_academic_year($current);
 
-        $update->execute([':ny' => $next, ':id' => $id]);
+        $update->execute([
+            ':ay' => $next,
+            ':id' => $stu['id']
+        ]);
     }
 
     $pdo->commit();
-    header("Location: ../frontend/index.php?msg=" . urlencode("Selected students transferred to next academic year") . "&type=success");
+    header("Location: ../frontend/index.php?msg=" . urlencode("Batch '$batch' transferred to next academic year") . "&type=success");
+    exit;
+
 } catch (Exception $e) {
     $pdo->rollBack();
     header("Location: ../frontend/index.php?msg=" . urlencode("Transfer failed: " . $e->getMessage()) . "&type=error");
+    exit;
 }

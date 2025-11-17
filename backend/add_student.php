@@ -3,48 +3,50 @@
 require_once __DIR__ . '/db.php';
 require_once __DIR__ . '/helpers.php';
 
-// Only allow POST
+// Allow only POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     header("Location: ../frontend/index.php?msg=" . urlencode("Invalid request") . "&type=error");
     exit;
 }
 
-// Fetch form variables safely
+// Get form values
 $first_name     = trim($_POST['first_name'] ?? '');
 $middle_name    = trim($_POST['middle_name'] ?? '');
 $last_name      = trim($_POST['last_name'] ?? '');
 $gr_no          = trim($_POST['gr_no'] ?? '');
 $enrollment_no  = trim($_POST['enrollment_no'] ?? '');
 $class          = trim($_POST['class'] ?? '');
+$semester       = trim($_POST['semester'] ?? '');
 $batch          = trim($_POST['batch'] ?? '');
 $academic_year  = trim($_POST['academic_year'] ?? '');
 
 // Required fields check
-if ($first_name === '' || $last_name === '' || $gr_no === '' || 
-    $enrollment_no === '' || $class === '' || $academic_year === '') {
+if ($first_name === '' || $last_name === '' || $gr_no === '' ||
+    $enrollment_no === '' || $class === '' || $semester === '' || $batch === '' || $academic_year === '') {
 
     header("Location: ../frontend/index.php?msg=" . urlencode("Please fill all required fields") . "&type=error");
     exit;
 }
 
 try {
-    // Insert student
+    // Insert student record
     $stmt = $pdo->prepare("
         INSERT INTO students 
-            (first_name, middle_name, last_name, gr_no, enrollment_no, class, batch, academic_year)
+            (gr_no, enrollment_no, class, semester, first_name, middle_name, last_name, batch, academic_year)
         VALUES 
-            (:first_name, :middle_name, :last_name, :gr_no, :enrollment_no, :class, :batch, :academic_year)
+            (:gr_no, :enrollment_no, :class, :semester, :first_name, :middle_name, :last_name, :batch, :academic_year)
     ");
 
     $stmt->execute([
-        ':first_name'     => $first_name,
-        ':middle_name'    => $middle_name,
-        ':last_name'      => $last_name,
         ':gr_no'          => $gr_no,
         ':enrollment_no'  => $enrollment_no,
         ':class'          => $class,
+        ':semester'       => $semester,
+        ':first_name'     => $first_name,
+        ':middle_name'    => $middle_name ?: null,
+        ':last_name'      => $last_name,
         ':batch'          => $batch,
-        ':academic_year'  => $academic_year,
+        ':academic_year'  => $academic_year
     ]);
 
     header("Location: ../frontend/index.php?msg=" . urlencode("Student added successfully") . "&type=success");
@@ -54,3 +56,4 @@ try {
     header("Location: ../frontend/index.php?msg=" . urlencode("Insert failed: " . $e->getMessage()) . "&type=error");
     exit;
 }
+?>
