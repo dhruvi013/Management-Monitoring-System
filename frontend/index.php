@@ -9,10 +9,7 @@ $params = [];
 $where = '';
 
 if ($search !== '') {
-    $where = "WHERE first_name LIKE :s 
-              OR last_name LIKE :s 
-              OR gr_no LIKE :s 
-              OR enrollment_no LIKE :s";
+    $where = "WHERE first_name LIKE :s OR last_name LIKE :s OR gr_no LIKE :s OR enrollment_no LIKE :s";
     $params[':s'] = "%$search%";
 }
 
@@ -26,7 +23,6 @@ $batches = $batchStmt->fetchAll();
 
 $msg = $_GET['msg'] ?? '';
 $type = $_GET['type'] ?? '';
-
 ?>
 <!doctype html>
 <html>
@@ -36,7 +32,6 @@ $type = $_GET['type'] ?? '';
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-
 <body class="bg-gray-100 p-6">
 <div class="max-w-6xl mx-auto">
 
@@ -69,8 +64,9 @@ $type = $_GET['type'] ?? '';
         </div>
         <div class="flex gap-2">
           <input required name="class" placeholder="Class" class="border p-2 w-1/2" />
-          <input name="batch" placeholder="Batch" class="border p-2 w-1/2" />
+          <input required type="number" name="semester" placeholder="Semester" class="border p-2 w-1/2" />
         </div>
+        <input required name="batch" placeholder="Batch" class="border p-2 w-full" />
         <input required name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="border p-2 w-full" />
         <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Add Student</button>
       </form>
@@ -79,28 +75,20 @@ $type = $_GET['type'] ?? '';
     <!-- BULK UPLOAD CSV -->
     <div class="bg-white p-4 rounded shadow">
       <h2 class="font-semibold mb-2">Bulk Upload (Excel/CSV)</h2>
-
       <p class="text-sm text-gray-600 mb-2">
         Excel/CSV should contain: <b>name, gr_no, enrollment_no, class</b>  
         (We will auto-split the name into first/middle/last)
       </p>
-
-      <!-- <form method="post" action="../backend/upload_file.php" enctype="multipart/form-data" class="space-y-3"> -->
-        <form method="post" action="../backend/upload_file.php" enctype="multipart/form-data">
-
+      <form method="post" action="../backend/upload_file.php" enctype="multipart/form-data">
         <label class="block">
           <span class="text-sm text-gray-600">Select Batch for this Upload</span>
           <input type="text" name="batch" required placeholder="e.g., B1" class="border p-2 w-full" />
         </label>
-
         <label class="block">
           <span class="text-sm text-gray-600">Academic Year</span>
           <input type="text" name="academic_year" required placeholder="e.g., 2023-24" class="border p-2 w-full" />
         </label>
-
         <input type="file" name="file" accept=".csv,.xlsx,.xls,.ods" required>
-
-
         <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Upload</button>
       </form>
     </div>
@@ -110,9 +98,7 @@ $type = $_GET['type'] ?? '';
   <!-- BATCH TRANSFER -->
   <div class="bg-white p-4 rounded shadow mb-6">
     <h2 class="font-semibold mb-2">Transfer an Entire Batch</h2>
-
     <form method="post" action="../backend/transfer.php" class="space-y-3">
-
       <label class="block">
         <span class="text-sm">Select Batch:</span>
         <select name="batch" required class="border p-2 w-full">
@@ -122,7 +108,6 @@ $type = $_GET['type'] ?? '';
           <?php endforeach; ?>
         </select>
       </label>
-
       <label class="block">
         <span class="text-sm">Action:</span>
         <select name="action" required class="border p-2 w-full">
@@ -130,10 +115,7 @@ $type = $_GET['type'] ?? '';
           <option value="no_transfer">Do NOT Transfer</option>
         </select>
       </label>
-
-      <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">
-        Apply to Batch
-      </button>
+      <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Apply to Batch</button>
     </form>
   </div>
 
@@ -155,13 +137,14 @@ $type = $_GET['type'] ?? '';
           <th class="p-2">GR No</th>
           <th class="p-2">Enrollment</th>
           <th class="p-2">Class</th>
+          <th class="p-2">Semester</th>
           <th class="p-2">Batch</th>
           <th class="p-2">Academic Year</th>
         </tr>
       </thead>
       <tbody>
       <?php if (count($students) === 0): ?>
-        <tr><td colspan="6" class="p-4 text-center text-gray-500">No students found.</td></tr>
+        <tr><td colspan="7" class="p-4 text-center text-gray-500">No students found.</td></tr>
       <?php else: ?>
         <?php foreach ($students as $s): ?>
           <tr class="border-t">
@@ -169,6 +152,7 @@ $type = $_GET['type'] ?? '';
             <td class="p-2"><?= h($s['gr_no']) ?></td>
             <td class="p-2"><?= h($s['enrollment_no']) ?></td>
             <td class="p-2"><?= h($s['class']) ?></td>
+            <td class="p-2"><?= h($s['semester']) ?></td>
             <td class="p-2"><?= h($s['batch']) ?></td>
             <td class="p-2"><?= h($s['academic_year']) ?></td>
           </tr>
