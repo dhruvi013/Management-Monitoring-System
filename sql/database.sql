@@ -23,3 +23,14 @@ CREATE TABLE students (
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+-- ALTER TABLE students
+-- MODIFY academic_year VARCHAR(20) NOT NULL;
+
+
+
+-- UPDATE students
+-- SET academic_year = '2024-25'
+-- WHERE academic_year = '2025' OR academic_year NOT LIKE '%-%';
