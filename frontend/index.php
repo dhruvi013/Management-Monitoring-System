@@ -92,7 +92,7 @@ $type = $_GET['type'] ?? '';
   ============================ -->
   <?php if ($tab === 'students'): ?>
   
-    <!-- Original student UI remains untouched -->
+    <!-- Student Forms -->
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
       <!-- Add Student -->
@@ -135,25 +135,7 @@ $type = $_GET['type'] ?? '';
 
     </section>
 
-    <!-- Batch Transfer -->
-    <div class="bg-white p-4 rounded shadow mb-6">
-      <h2 class="font-semibold mb-2">Transfer Batch</h2>
-      <form method="post" action="../backend/transfer.php" class="space-y-3">
-        <select name="batch" required class="border p-2 w-full">
-          <option value="">-- Select Batch --</option>
-          <?php foreach ($batches as $b): ?>
-            <option value="<?= h($b['batch']) ?>"><?= h($b['batch']) ?></option>
-          <?php endforeach; ?>
-        </select>
-        <select name="action" required class="border p-2 w-full">
-          <option value="transfer">Transfer to Next Year</option>
-          <option value="no_transfer">Do NOT Transfer</option>
-        </select>
-        <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Apply</button>
-      </form>
-    </div>
-
-    <!-- Search -->
+    <!-- Student Search -->
     <div class="bg-white p-4 rounded shadow mb-4">
       <form method="get" class="flex items-center gap-2">
         <input type="hidden" name="tab" value="students">
@@ -162,7 +144,7 @@ $type = $_GET['type'] ?? '';
       </form>
     </div>
 
-    <!-- Students Table -->
+    <!-- Student Table -->
     <div class="bg-white p-4 rounded shadow">
       <table class="min-w-full text-sm">
         <thead class="bg-gray-50">
@@ -203,12 +185,14 @@ $type = $_GET['type'] ?? '';
   ============================ -->
   <?php if ($tab === 'faculty'): ?>
 
+    <!-- Faculty Forms -->
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
 
       <!-- Add Faculty -->
       <div class="bg-white p-4 rounded shadow">
         <h2 class="font-semibold mb-2">Add Faculty</h2>
         <form method="post" action="../backend/add_faculty.php" class="space-y-2">
+
           <input required name="faculty_id" placeholder="Faculty ID" class="border p-2 w-full" />
 
           <div class="flex gap-2">
@@ -219,7 +203,6 @@ $type = $_GET['type'] ?? '';
 
           <input required name="department" placeholder="Department" class="border p-2 w-full" />
           <input required name="designation" placeholder="Designation" class="border p-2 w-full" />
-
           <input required name="academic_year" placeholder="Academic Year (2023-24)" class="border p-2 w-full" />
 
           <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Add Faculty</button>
@@ -238,28 +221,7 @@ $type = $_GET['type'] ?? '';
 
     </section>
 
-    <!-- Transfer Faculty -->
-    <div class="bg-white p-4 rounded shadow mb-6">
-      <h2 class="font-semibold mb-2">Transfer Faculty (Department-wise)</h2>
-      <form method="post" action="../backend/transfer_faculty.php" class="space-y-3">
-
-        <select name="department" required class="border p-2 w-full">
-          <option value="">-- Select Department --</option>
-          <?php foreach ($departments as $d): ?>
-            <option><?= h($d['department']) ?></option>
-          <?php endforeach; ?>
-        </select>
-
-        <select name="action" required class="border p-2 w-full">
-          <option value="transfer">Transfer to Next Year</option>
-          <option value="no_transfer">Do NOT Transfer</option>
-        </select>
-
-        <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Apply</button>
-      </form>
-    </div>
-
-    <!-- Search Faculty -->
+    <!-- Faculty Search -->
     <div class="bg-white p-4 rounded shadow mb-4">
       <form method="get" class="flex items-center gap-2">
         <input type="hidden" name="tab" value="faculty">
@@ -271,7 +233,7 @@ $type = $_GET['type'] ?? '';
     <!-- Faculty Table -->
     <div class="bg-white p-4 rounded shadow">
       <form method="post" action="../backend/delete_faculty.php">
-        <button class="mb-3 bg-red-600 text-white px-4 py-2 rounded">Delete Selected</button>
+        <button class="mb-3 bg-indigo-600 text-white px-4 py-2 rounded">Delete Selected</button>
 
         <table class="min-w-full text-sm">
           <thead class="bg-gray-50">
