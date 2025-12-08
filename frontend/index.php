@@ -68,6 +68,7 @@ $type = $_GET['type'] ?? '';
 
   <!-- TABS -->
   <div class="flex gap-4 mb-6">
+
     <a href="?tab=students"
        class="px-4 py-2 rounded 
               <?= $tab === 'students' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border' ?>">
@@ -79,7 +80,16 @@ $type = $_GET['type'] ?? '';
               <?= $tab === 'faculty' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border' ?>">
       Faculty
     </a>
+
+    <a href="?tab=nba"
+       class="px-4 py-2 rounded 
+              <?= $tab === 'nba' ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border' ?>">
+      NBA
+    </a>
+
   </div>
+
+  
 
   <?php if ($msg): ?>
     <div class="<?= $type === 'error' ? 'bg-red-100 text-red-700' : 'bg-green-100 text-green-700' ?> border px-4 py-3 rounded mb-4">
@@ -228,7 +238,7 @@ $type = $_GET['type'] ?? '';
         <input name="faculty_search" placeholder="Search Faculty..." value="<?= h($facultySearch) ?>" class="border p-2 w-1/3" />
         <button class="px-3 py-2 bg-indigo-600 text-white rounded">Search</button>
       </form>
-    </div>
+    </div>         
 
     <!-- Faculty Table -->
     <div class="bg-white p-4 rounded shadow">
@@ -269,8 +279,50 @@ $type = $_GET['type'] ?? '';
         </table>
       </form>
     </div>
+    
 
   <?php endif; ?>
+
+
+  <?php if ($tab === 'nba'): ?>
+
+<div class="bg-white p-6 rounded shadow">
+
+  <h2 class="text-2xl font-bold mb-4">NBA Accreditation Criteria</h2>
+  <p class="text-gray-600 mb-6">
+    Select a criterion to upload documents or view details.
+  </p>
+
+  <div class="space-y-4">
+
+    <?php
+      $criteria = [
+        "1. Vision, Mission & PEOs",
+        "2. Program Curriculum & Teaching Learning Process",
+        "3. Course Outcomes (CO) & PO Mapping",
+        "4. Student Performance",
+        "5. Faculty Information",
+        "6. Infrastructure & Facilities",
+        "7. Continuous Improvement"
+      ];
+    ?>
+
+    <?php foreach ($criteria as $c): ?>
+      <div class="border rounded p-4 bg-gray-50">
+        <h3 class="font-semibold"><?= $c ?></h3>
+        <a href="nba_page.php?criteria=<?= urlencode($c) ?>"
+           class="mt-2 inline-block bg-blue-600 text-white px-3 py-1 rounded">
+           Open
+        </a>
+      </div>
+    <?php endforeach; ?>
+
+  </div>
+
+</div>
+
+<?php endif; ?>
+
 
 </div>
 </body>
