@@ -1,4 +1,4 @@
--- NBA Tables for Criteria 4.1, 4.2, 4.3, and 4.4
+-- NBA Tables for All Criteria
 
 USE department_monitoring;
 
@@ -7,6 +7,10 @@ DROP TABLE IF EXISTS nba_enrollment_41;
 DROP TABLE IF EXISTS nba_success_421;
 DROP TABLE IF EXISTS nba_success_422;
 DROP TABLE IF EXISTS nba_academic_43;
+DROP TABLE IF EXISTS nba_placement_44;
+DROP TABLE IF EXISTS nba_professional_451;
+DROP TABLE IF EXISTS nba_publications_452;
+DROP TABLE IF EXISTS nba_participation_453;
 
 -- 4.1 Enrollment Ratio (20 marks)
 CREATE TABLE nba_enrollment_41 (
@@ -74,6 +78,47 @@ CREATE TABLE nba_placement_44 (
   higher_studies INT NOT NULL,
   entrepreneur INT NOT NULL,
   assessment_index DECIMAL(5,4) NOT NULL,
+  marks DECIMAL(5,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4.5.1 Professional Chapters and Events (5 marks)
+CREATE TABLE nba_professional_451 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(20) NOT NULL,
+  no_of_chapters INT NOT NULL,
+  international_events INT NOT NULL,
+  national_events INT NOT NULL,
+  state_events INT NOT NULL,
+  dept_events INT NOT NULL,
+  marks_a DECIMAL(5,2) NOT NULL,
+  marks_b DECIMAL(5,2) NOT NULL,
+  total_marks DECIMAL(5,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4.5.2 Publications (Magazine/Newsletter) (5 marks)
+CREATE TABLE nba_publications_452 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(20) NOT NULL,
+  magazine ENUM('Yes', 'No') NOT NULL,
+  target_freq1 INT NOT NULL,
+  newsletter ENUM('Yes', 'No') NOT NULL,
+  target_freq2 INT NOT NULL,
+  marks DECIMAL(5,2) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 4.5.3 Student Participation in Events (10 marks)
+CREATE TABLE nba_participation_453 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(20) NOT NULL,
+  total_participation INT NOT NULL,
+  participation_within_state INT NOT NULL,
+  participation_outside_state INT NOT NULL,
+  awards INT NOT NULL,
+  within_state_percentage DECIMAL(5,2) NOT NULL,
+  outside_state_percentage DECIMAL(5,2) NOT NULL,
   marks DECIMAL(5,2) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

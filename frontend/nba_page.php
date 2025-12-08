@@ -407,6 +407,279 @@ $title = $sub ?: $criteria;
       </script>
   <?php } ?>
 
+  
+
+
+  <!-- ************************************
+       4.5.1 - Professional Chapters and Events (5 marks)
+  ************************************* -->
+  <?php if ($sub === "4.5.1 - Professional Chapters and Events (5)") { ?>
+      <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-indigo-800">4.5.1 - Professional Chapters and Events</h2>
+          <p class="text-sm text-gray-700 mb-4">Track professional society chapters and organized events</p>
+
+          <form method="post" action="../backend/NBA/save_451.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
+              
+              <div class="bg-blue-50 p-4 rounded border border-blue-200">
+                  <h3 class="font-semibold text-gray-700 mb-2">Part A: Professional Chapters (Max 3 marks)</h3>
+                  <input type="number" name="no_of_chapters" placeholder="Number of Chapters" class="w-full border p-2 rounded" required min="0">
+                  <p class="text-xs text-gray-500 mt-1">1 chapter = 1 mark, 2 chapters = 2 marks, 3+ chapters = 3 marks</p>
+              </div>
+
+              <div class="bg-green-50 p-4 rounded border border-green-200">
+                  <h3 class="font-semibold text-gray-700 mb-3">Part B: Events Organized (Max 2 marks)</h3>
+                  <div class="space-y-2">
+                      <div>
+                          <label class="text-sm text-gray-600">International Events</label>
+                          <input type="number" name="international_events" placeholder="Number of international events" class="w-full border p-2 rounded" required min="0">
+                          <p class="text-xs text-gray-500">1 event = 0.5 marks</p>
+                      </div>
+                      <div>
+                          <label class="text-sm text-gray-600">National Events</label>
+                          <input type="number" name="national_events" placeholder="Number of national events" class="w-full border p-2 rounded" required min="0">
+                          <p class="text-xs text-gray-500">1 event = 1 mark</p>
+                      </div>
+                      <div>
+                          <label class="text-sm text-gray-600">State Level Events</label>
+                          <input type="number" name="state_events" placeholder="Number of state events" class="w-full border p-2 rounded" required min="0">
+                          <p class="text-xs text-gray-500">5 events = 1 mark</p>
+                      </div>
+                      <div>
+                          <label class="text-sm text-gray-600">Department Level Events</label>
+                          <input type="number" name="dept_events" placeholder="Number of department events" class="w-full border p-2 rounded" required min="0">
+                          <p class="text-xs text-gray-500">20+ events = 3 marks</p>
+                      </div>
+                  </div>
+              </div>
+
+              <button class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Save Data & Calculate Marks</button>
+          </form>
+
+          <div id="marks-display-451" class="mt-6 p-4 bg-white rounded-lg border-2 border-indigo-300">
+              <h3 class="font-bold text-lg mb-2">Calculated Marks</h3>
+              <div id="marks-content-451" class="text-center">
+                  <p class="text-gray-500">Loading...</p>
+              </div>
+          </div>
+      </div>
+
+      <script>
+      fetch('../backend/NBA/get_marks.php?criteria=4.5.1')
+          .then(response => response.json())
+          .then(data => {
+              const container = document.getElementById('marks-content-451');
+              if (data.success) {
+                  container.innerHTML = `
+                      <div class="text-4xl font-bold text-indigo-600 mb-2">${parseFloat(data.total_marks).toFixed(2)} / 5</div>
+                      <div class="grid grid-cols-2 gap-3 mb-3">
+                          <div class="bg-blue-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Part A (Chapters)</p>
+                              <p class="text-lg font-bold text-blue-600">${parseFloat(data.marks_a).toFixed(2)} / 3</p>
+                              <p class="text-xs">${data.no_of_chapters} chapters</p>
+                          </div>
+                          <div class="bg-green-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Part B (Events)</p>
+                              <p class="text-lg font-bold text-green-600">${parseFloat(data.marks_b).toFixed(2)} / 2</p>
+                          </div>
+                      </div>
+                      <p class="text-sm text-gray-700">Intl: ${data.international_events} | National: ${data.national_events} | State: ${data.state_events} | Dept: ${data.dept_events}</p>
+                      <p class="text-gray-700 text-sm mt-2">Academic Year: ${data.academic_year}</p>
+                  `;
+              } else {
+                  container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
+              }
+          })
+          .catch(error => {
+              document.getElementById('marks-content-451').innerHTML = '<p class="text-red-500">Error loading marks</p>';
+          });
+      </script>
+  <?php } ?>
+
+
+  <!-- ************************************
+       4.5.2 - Publications (Magazine/Newsletter) (5 marks)
+  ************************************* -->
+  <?php if ($sub === "4.5.2 - Publications (Magazine/Newsletter) (5)") { ?>
+      <div class="p-6 border-l-4 border-pink-500 bg-pink-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-pink-800">4.5.2 - Publications (Magazine/Newsletter)</h2>
+          <p class="text-sm text-gray-700 mb-4">Track magazine and newsletter publications</p>
+
+          <form method="post" action="../backend/NBA/save_452.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
+              
+              <div class="grid grid-cols-2 gap-4">
+                  <div class="bg-blue-50 p-3 rounded">
+                      <label class="font-semibold text-gray-700">Magazine</label>
+                      <select name="magazine" class="w-full border p-2 rounded mt-2" required>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                      </select>
+                      <input type="number" name="target_freq1" placeholder="Frequency per year" class="w-full border p-2 rounded mt-2" required min="0">
+                      <p class="text-xs text-gray-500 mt-1">Target: 1 per year</p>
+                  </div>
+
+                  <div class="bg-green-50 p-3 rounded">
+                      <label class="font-semibold text-gray-700">Newsletter</label>
+                      <select name="newsletter" class="w-full border p-2 rounded mt-2" required>
+                          <option value="Yes">Yes</option>
+                          <option value="No">No</option>
+                      </select>
+                      <input type="number" name="target_freq2" placeholder="Frequency per year" class="w-full border p-2 rounded mt-2" required min="0">
+                      <p class="text-xs text-gray-500 mt-1">Target: 4 per year</p>
+                  </div>
+              </div>
+
+              <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
+                  <p class="text-sm font-semibold text-gray-700">Full marks (5) if:</p>
+                  <p class="text-xs text-gray-600 mt-1">Magazine frequency ≥ 1 AND Newsletter frequency ≥ 4</p>
+              </div>
+
+              <button class="bg-pink-600 text-white px-4 py-2 rounded w-full">Save Data & Calculate Marks</button>
+          </form>
+
+          <div id="marks-display-452" class="mt-6 p-4 bg-white rounded-lg border-2 border-pink-300">
+              <h3 class="font-bold text-lg mb-2">Calculated Marks</h3>
+              <div id="marks-content-452" class="text-center">
+                  <p class="text-gray-500">Loading...</p>
+              </div>
+          </div>
+      </div>
+
+      <script>
+      fetch('../backend/NBA/get_marks.php?criteria=4.5.2')
+          .then(response => response.json())
+          .then(data => {
+              const container = document.getElementById('marks-content-452');
+              if (data.success) {
+                  container.innerHTML = `
+                      <div class="text-4xl font-bold text-pink-600 mb-2">${parseFloat(data.marks).toFixed(2)} / 5</div>
+                      <div class="grid grid-cols-2 gap-3 mb-3">
+                          <div class="bg-blue-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Magazine</p>
+                              <p class="text-sm font-bold">${data.magazine}</p>
+                              <p class="text-xs">Frequency: ${data.target_freq1}/year</p>
+                          </div>
+                          <div class="bg-green-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Newsletter</p>
+                              <p class="text-sm font-bold">${data.newsletter}</p>
+                              <p class="text-xs">Frequency: ${data.target_freq2}/year</p>
+                          </div>
+                      </div>
+                      <p class="text-gray-700 text-sm mt-2">Academic Year: ${data.academic_year}</p>
+                  `;
+              } else {
+                  container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
+              }
+          })
+          .catch(error => {
+              document.getElementById('marks-content-452').innerHTML = '<p class="text-red-500">Error loading marks</p>';
+          });
+      </script>
+  <?php } ?>
+
+
+  <!-- ************************************
+       4.5.3 - Student Participation in Events (10 marks)
+  ************************************* -->
+  <?php if ($sub === "4.5.3 - Student Participation in Events (10)") { ?>
+      <div class="p-6 border-l-4 border-orange-500 bg-orange-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-orange-800">4.5.3 - Student Participation in Events</h2>
+          <p class="text-sm text-gray-700 mb-4">Track student participation and awards (4-year average)</p>
+
+          <form method="post" action="../backend/NBA/save_453.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
+              
+              <input type="number" name="total_participation" placeholder="Total Participation" class="w-full border p-2 rounded" required min="1">
+
+              <div class="grid grid-cols-2 gap-4">
+                  <div>
+                      <label class="text-sm text-gray-600">Participation Within State</label>
+                      <input type="number" name="participation_within_state" placeholder="Within state count" class="w-full border p-2 rounded" required min="0">
+                      <p class="text-xs text-gray-500 mt-1">Target: 40% of total</p>
+                  </div>
+                  <div>
+                      <label class="text-sm text-gray-600">Participation Outside State</label>
+                      <input type="number" name="participation_outside_state" placeholder="Outside state count" class="w-full border p-2 rounded" required min="0">
+                      <p class="text-xs text-gray-500 mt-1">Target: 20% of total</p>
+                  </div>
+              </div>
+
+              <div>
+                  <label class="text-sm text-gray-600">Awards Won</label>
+                  <input type="number" name="awards" placeholder="Number of awards" class="w-full border p-2 rounded" required min="0">
+                  <p class="text-xs text-gray-500 mt-1">Target: 5 awards</p>
+              </div>
+
+              <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
+                  <p class="text-sm font-semibold text-gray-700">Targets (4-year average):</p>
+                  <p class="text-xs text-gray-600 mt-1">• Within state: 40% | Outside state: 20% | Awards: 5</p>
+                  <p class="text-xs text-gray-600">Full 10 marks if all targets met or exceeded</p>
+              </div>
+
+              <button class="bg-orange-600 text-white px-4 py-2 rounded w-full">Save Data & Calculate Marks</button>
+          </form>
+
+          <div id="marks-display-453" class="mt-6 p-4 bg-white rounded-lg border-2 border-orange-300">
+              <h3 class="font-bold text-lg mb-2">Calculated Marks (4-Year Average)</h3>
+              <div id="marks-content-453" class="text-center">
+                  <p class="text-gray-500">Loading...</p>
+              </div>
+          </div>
+      </div>
+
+      <script>
+      fetch('../backend/NBA/get_marks.php?criteria=4.5.3')
+          .then(response => response.json())
+          .then(data => {
+              const container = document.getElementById('marks-content-453');
+              if (data.success) {
+                  let historyHTML = '';
+                  if (data.history && data.history.length > 0) {
+                      historyHTML = '<div class="mt-4 text-sm"><p class="font-semibold mb-2">Last 4 Years:</p><div class="grid grid-cols-1 gap-2">';
+                      data.history.forEach(h => {
+                          historyHTML += `
+                              <div class="bg-gray-50 p-2 rounded text-xs">
+                                  <p class="font-semibold">${h.academic_year}</p>
+                                  <p>Total: ${h.total_participation} | Within: ${parseFloat(h.within_state_percentage).toFixed(1)}% | Outside: ${parseFloat(h.outside_state_percentage).toFixed(1)}% | Awards: ${h.awards}</p>
+                              </div>
+                          `;
+                      });
+                      historyHTML += '</div></div>';
+                  }
+                  
+                  container.innerHTML = `
+                      <div class="text-4xl font-bold text-orange-600 mb-2">${parseFloat(data.marks).toFixed(2)} / 10</div>
+                      <div class="grid grid-cols-3 gap-3 mb-3">
+                          <div class="bg-blue-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Within State</p>
+                              <p class="text-lg font-bold text-blue-600">${parseFloat(data.within_state_percentage).toFixed(1)}%</p>
+                              <p class="text-xs">${data.participation_within_state} students</p>
+                          </div>
+                          <div class="bg-green-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Outside State</p>
+                              <p class="text-lg font-bold text-green-600">${parseFloat(data.outside_state_percentage).toFixed(1)}%</p>
+                              <p class="text-xs">${data.participation_outside_state} students</p>
+                          </div>
+                          <div class="bg-purple-50 p-2 rounded">
+                              <p class="text-xs text-gray-600">Awards</p>
+                              <p class="text-lg font-bold text-purple-600">${data.awards}</p>
+                          </div>
+                      </div>
+                      <p class="text-gray-700">Total Participation: ${data.total_participation}</p>
+                      <p class="text-gray-700 text-sm mt-2">Academic Year: ${data.academic_year}</p>
+                      ${historyHTML}
+                  `;
+              } else {
+                  container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
+              }
+          })
+          .catch(error => {
+              document.getElementById('marks-content-453').innerHTML = '<p class="text-red-500">Error loading marks</p>';
+          });
+      </script>
+  <?php } ?>
+
   <!-- 3.1 CO Attainment -->
   <?php if ($sub === "3.1 - CO Attainment") { ?>
       <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">

@@ -97,6 +97,70 @@ try {
             $response = ['success' => false, 'message' => 'No data found'];
         }
     }
+    elseif ($criteria === '4.5.1') {
+        $stmt = $pdo->query("SELECT * FROM nba_professional_451 ORDER BY created_at DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            $response = [
+                'success' => true,
+                'total_marks' => $data['total_marks'],
+                'marks_a' => $data['marks_a'],
+                'marks_b' => $data['marks_b'],
+                'no_of_chapters' => $data['no_of_chapters'],
+                'international_events' => $data['international_events'],
+                'national_events' => $data['national_events'],
+                'state_events' => $data['state_events'],
+                'dept_events' => $data['dept_events'],
+                'academic_year' => $data['academic_year']
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
+    elseif ($criteria === '4.5.2') {
+        $stmt = $pdo->query("SELECT * FROM nba_publications_452 ORDER BY created_at DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            $response = [
+                'success' => true,
+                'marks' => $data['marks'],
+                'magazine' => $data['magazine'],
+                'target_freq1' => $data['target_freq1'],
+                'newsletter' => $data['newsletter'],
+                'target_freq2' => $data['target_freq2'],
+                'academic_year' => $data['academic_year']
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
+    elseif ($criteria === '4.5.3') {
+        $stmt = $pdo->query("SELECT * FROM nba_participation_453 ORDER BY created_at DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            // Get last 4 years for history
+            $stmt = $pdo->query("SELECT academic_year, total_participation, within_state_percentage, outside_state_percentage, awards FROM nba_participation_453 ORDER BY created_at DESC LIMIT 4");
+            $history = $stmt->fetchAll();
+            
+            $response = [
+                'success' => true,
+                'marks' => $data['marks'],
+                'total_participation' => $data['total_participation'],
+                'participation_within_state' => $data['participation_within_state'],
+                'participation_outside_state' => $data['participation_outside_state'],
+                'awards' => $data['awards'],
+                'within_state_percentage' => $data['within_state_percentage'],
+                'outside_state_percentage' => $data['outside_state_percentage'],
+                'academic_year' => $data['academic_year'],
+                'history' => $history
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }
