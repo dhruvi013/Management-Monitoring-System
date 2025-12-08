@@ -52,3 +52,14 @@ CREATE TABLE faculty (
 
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
+
+-- 4.1 Enrollment Ratio
+CREATE TABLE IF NOT EXISTS nba_enrollment_41 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  intake INT NOT NULL,
+  admitted INT NOT NULL,
+  academic_year VARCHAR(20) NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

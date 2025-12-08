@@ -295,29 +295,79 @@ $type = $_GET['type'] ?? '';
 
   <div class="space-y-4">
 
-    <?php
-      $criteria = [
-        "1. Vision, Mission & PEOs",
-        "2. Program Curriculum & Teaching Learning Process",
-        "3. Course Outcomes (CO) & PO Mapping",
-        "4. Student Performance",
-        "5. Faculty Information",
-        "6. Infrastructure & Facilities",
-        "7. Continuous Improvement"
-      ];
-    ?>
+<?php
+$criteria = [
+    "4.1 - Enrollment Ratio (20)" => [],
+    
+    "4.2 - Success Rate in the Stipulated Period of Program (20)" => [
+        "4.2.1 - Success Rate without backlog in any semester/year of study (15)",
+        "4.2.2 - Success Rate in stipulated period (actua duration of the program) (5)"
+    ],
 
-    <?php foreach ($criteria as $c): ?>
-      <div class="border rounded p-4 bg-gray-50">
-        <h3 class="font-semibold"><?= $c ?></h3>
-        <a href="nba_page.php?criteria=<?= urlencode($c) ?>"
-           class="mt-2 inline-block bg-blue-600 text-white px-3 py-1 rounded">
-           Open
-        </a>
-      </div>
-    <?php endforeach; ?>
+    "3 - Course Outcomes (CO) & PO Mapping" => [
+        "3.1 - CO Attainment",
+        "3.2 - PO Mapping",
+    ],
+
+    "4 - Student Performance" => [
+        "4.3.1 - Placements",
+        "4.3.2 - Higher Studies",
+        "4.3.3 - Competitive Exams",
+    ],
+
+    "5 - Faculty Information" => [
+        "5.1 - Faculty Qualification",
+        "5.2 - Faculty–Student Ratio",
+    ],
+
+    "6 - Infrastructure & Facilities" => [
+        "6.1 - Labs",
+        "6.2 - Classrooms",
+        "6.3 - Library",
+    ],
+
+    "7 - Continuous Improvement" => [
+        "7.1 - Previous Year Improvements",
+        "7.2 - Achieved Outcomes",
+    ]
+];
+?>
+
+<?php foreach ($criteria as $main => $subs): ?>
+  <div class="border rounded p-4 bg-gray-50 mb-4">
+
+    <!-- MAIN CRITERIA -->
+    <h3 class="font-semibold text-lg"><?= $main ?></h3>
+
+    <a href="nba_page.php?criteria=<?= urlencode($main) ?>"
+       class="mt-2 inline-block bg-blue-600 text-white px-3 py-1 rounded">
+       Open
+    </a>
+
+    <!-- SUB-CRITERIA -->
+    <?php if (!empty($subs)): ?>
+      <ul class="mt-3 ml-4 list-disc text-gray-700">
+
+        <?php foreach ($subs as $s): ?>
+          <li class="flex items-center justify-between">
+
+            <span><?= $s ?></span>
+
+            <a href="nba_page.php?subcriteria=<?= urlencode($s) ?>&main=<?= urlencode($main) ?>"
+               class="bg-green-600 text-white px-2 py-1 rounded ml-4">
+               Open
+            </a>
+          </li>
+        <?php endforeach; ?>
+
+      </ul>
+    <?php endif; ?>
 
   </div>
+<?php endforeach; ?>
+
+
+</div>
 
 </div>
 
