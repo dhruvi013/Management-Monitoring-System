@@ -297,22 +297,17 @@ $type = $_GET['type'] ?? '';
 
 <?php
 $criteria = [
-    "4.1 - Enrollment Ratio (20)" => [],
-    
-    "4.2 - Success Rate in the Stipulated Period of Program (20)" => [
-        "4.2.1 - Success Rate without backlog in any semester/year of study (15)",
-        "4.2.2 - Success Rate in stipulated period (actua duration of the program) (5)"
+    "4 - Student Performance" => [
+        "4.1 - Enrollment Ratio (20)",
+        "4.2 - Success Rate in the Stipulated Period of Program (20)",
+        "4.3 - Academic Performance in Second Year (10)",
+        "4.4 - Placement and Career Progression (30)",
+        "4.5 - Professional Societies and Activities"
     ],
 
     "3 - Course Outcomes (CO) & PO Mapping" => [
         "3.1 - CO Attainment",
         "3.2 - PO Mapping",
-    ],
-
-    "4 - Student Performance" => [
-        "4.3.1 - Placements",
-        "4.3.2 - Higher Studies",
-        "4.3.3 - Competitive Exams",
     ],
 
     "5 - Faculty Information" => [
@@ -338,11 +333,6 @@ $criteria = [
 
     <!-- MAIN CRITERIA -->
     <h3 class="font-semibold text-lg"><?= $main ?></h3>
-
-    <a href="nba_page.php?criteria=<?= urlencode($main) ?>"
-       class="mt-2 inline-block bg-blue-600 text-white px-3 py-1 rounded">
-       Open
-    </a>
 
     <!-- SUB-CRITERIA -->
     <?php if (!empty($subs)): ?>

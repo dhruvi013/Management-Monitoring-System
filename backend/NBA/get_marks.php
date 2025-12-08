@@ -54,6 +54,49 @@ try {
             $response = ['success' => false, 'message' => 'No data found'];
         }
     }
+    elseif ($criteria === '4.3') {
+        // Get latest 4.3 data
+        $stmt = $pdo->query("SELECT * FROM nba_academic_43 ORDER BY created_at DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            $response = [
+                'success' => true,
+                'marks' => $data['marks'],
+                'api' => $data['api'],
+                'mean_cgpa' => $data['total_mean_cgpa'],
+                'success_rate' => $data['success_rate'],
+                'academic_year' => $data['academic_year']
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
+    elseif ($criteria === '4.4') {
+        // Get latest 4.4 data
+        $stmt = $pdo->query("SELECT * FROM nba_placement_44 ORDER BY created_at DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            // Get last 3 years for history
+            $stmt = $pdo->query("SELECT academic_year, assessment_index, placed, higher_studies, entrepreneur, final_year_total FROM nba_placement_44 ORDER BY created_at DESC LIMIT 3");
+            $history = $stmt->fetchAll();
+            
+            $response = [
+                'success' => true,
+                'marks' => $data['marks'],
+                'assessment_index' => $data['assessment_index'],
+                'placed' => $data['placed'],
+                'higher_studies' => $data['higher_studies'],
+                'entrepreneur' => $data['entrepreneur'],
+                'final_year_total' => $data['final_year_total'],
+                'academic_year' => $data['academic_year'],
+                'history' => $history
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }
