@@ -44,48 +44,140 @@ $title = $sub ?: $criteria;
           <h2 class="text-xl font-bold mb-4 text-blue-800">4.1 - Enrollment Ratio Form</h2>
 
           <form method="post" action="../backend/NBA/save_41.php" class="space-y-4">
-              <input type="text" name="intake" placeholder="Academic Year (2023-24)" class="w-full border p-2 rounded" required>
-              <input type="number" name="admitted" placeholder="Intake" class="w-full border p-2 rounded" required>
-              <input type="number" name="year" placeholder="Admitted" class="w-full border p-2 rounded" required>
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
+              <input type="number" name="intake" placeholder="Intake (Sanctioned Capacity)" class="w-full border p-2 rounded" required>
+              <input type="number" name="admitted" placeholder="Admitted (Actual Students)" class="w-full border p-2 rounded" required>
 
               <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
           </form>
+
+          <!-- Display Marks -->
+          <div id="marks-display-41" class="mt-6 p-4 bg-white rounded-lg border-2 border-blue-300">
+              <h3 class="font-bold text-lg mb-2">Calculated Marks</h3>
+              <p class="text-gray-600 text-sm mb-3">Based on average enrollment ratio of last 3 years</p>
+              <div id="marks-content-41" class="text-center">
+                  <p class="text-gray-500">Loading...</p>
+              </div>
+          </div>
       </div>
+
+      <script>
+      // Fetch and display marks for 4.1
+      fetch('../backend/NBA/get_marks.php?criteria=4.1')
+          .then(response => response.json())
+          .then(data => {
+              const container = document.getElementById('marks-content-41');
+              if (data.success) {
+                  let historyHTML = '';
+                  if (data.history && data.history.length > 0) {
+                      historyHTML = '<div class="mt-3 text-sm"><p class="font-semibold mb-1">Last 3 Years:</p><ul class="list-disc list-inside">';
+                      data.history.forEach(h => {
+                          historyHTML += `<li>${h.academic_year}: ${parseFloat(h.enrollment_ratio).toFixed(2)}%</li>`;
+                      });
+                      historyHTML += '</ul></div>';
+                  }
+                  
+                  container.innerHTML = `
+                      <div class="text-4xl font-bold text-blue-600 mb-2">${parseFloat(data.marks).toFixed(2)} / 20</div>
+                      <p class="text-gray-700">Current Enrollment Ratio: ${parseFloat(data.enrollment_ratio).toFixed(2)}%</p>
+                      <p class="text-gray-700">Academic Year: ${data.academic_year}</p>
+                      ${historyHTML}
+                  `;
+              } else {
+                  container.innerHTML = '<p class="text-gray-500">No data available yet. Submit the form to calculate marks.</p>';
+              }
+          })
+          .catch(error => {
+              document.getElementById('marks-content-41').innerHTML = '<p class="text-red-500">Error loading marks</p>';
+          });
+      </script>
   <?php } ?>
+
+
 
 
   <!-- ************************************
-        SUB-CRITERIA FORMS
+       4.2 - Success Rate Form (Combined)
   ************************************* -->
-
-
-  <?php if ($sub === "4.2.1 - Success Rate in 1st Year") { ?>
+  <?php if ($criteria === "4.2 - Success Rate in the Stipulated Period of Program (20)") { ?>
       <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
-          <h2 class="text-xl font-bold mb-4 text-green-800">4.2.1 - Success Rate (1st Year)</h2>
+          <h2 class="text-xl font-bold mb-4 text-green-800">4.2 - Success Rate Form</h2>
+          <p class="text-sm text-gray-700 mb-4">This form calculates both 4.2.1 (Success without backlog - 15 marks) and 4.2.2 (Success in stipulated period - 5 marks)</p>
 
-          <form method="post" action="../backend/nba/save_421.php" class="space-y-4">
-              <input type="number" name="eligible_students" placeholder="Eligible Students" class="w-full border p-2 rounded" required>
-              <input type="number" name="passed_students" placeholder="Students Passed" class="w-full border p-2 rounded" required>
-              <input type="text" name="year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+          <form method="post" action="../backend/NBA/save_42.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
+              
+              <div class="grid grid-cols-2 gap-4">
+                  <input type="number" id="admitted_degree" name="admitted_degree" placeholder="Admitted in Degree (1st Year)" class="w-full border p-2 rounded" required min="0">
+                  <input type="number" id="admitted_d2d" name="admitted_d2d" placeholder="Admitted via Lateral Entry (D2D)" class="w-full border p-2 rounded" required min="0">
+              </div>
 
-              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Record</button>
+              <div class="bg-blue-100 p-3 rounded">
+                  <label class="font-semibold text-gray-700">Total Admitted (Auto-calculated):</label>
+                  <input type="number" id="total_admitted" name="total_admitted" class="w-full border p-2 rounded mt-1 bg-gray-100" readonly>
+              </div>
+
+              <input type="number" name="graduated_wo_back" placeholder="Graduated WITHOUT Backlog (for 4.2.1)" class="w-full border p-2 rounded" required min="0">
+              
+              <input type="number" name="graduated_w_back" placeholder="Graduated in Stipulated Time (for 4.2.2)" class="w-full border p-2 rounded" required min="0">
+
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data & Calculate Marks</button>
           </form>
+
+          <!-- Display Marks -->
+          <div id="marks-display-42" class="mt-6 p-4 bg-white rounded-lg border-2 border-green-300">
+              <h3 class="font-bold text-lg mb-2">Calculated Marks</h3>
+              <p class="text-gray-600 text-sm mb-3">Based on average success index of last 3 batches</p>
+              <div id="marks-content-42" class="text-center">
+                  <p class="text-gray-500">Loading...</p>
+              </div>
+          </div>
       </div>
-  <?php } ?>
 
+      <script>
+      // Auto-calculate total admitted
+      function calculateTotal() {
+          const degree = parseInt(document.getElementById('admitted_degree').value) || 0;
+          const d2d = parseInt(document.getElementById('admitted_d2d').value) || 0;
+          document.getElementById('total_admitted').value = degree + d2d;
+      }
 
-  <?php if ($sub === "4.2.2 - Success Rate in 2nd Year") { ?>
-      <div class="p-6 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg mb-6">
-          <h2 class="text-xl font-bold mb-4 text-yellow-800">4.2.2 - Success Rate (2nd Year)</h2>
+      document.getElementById('admitted_degree').addEventListener('input', calculateTotal);
+      document.getElementById('admitted_d2d').addEventListener('input', calculateTotal);
 
-          <form method="post" action="../backend/nba/save_422.php" class="space-y-4">
-              <input type="number" name="students_admitted" placeholder="Students Admitted" class="w-full border p-2 rounded" required>
-              <input type="number" name="graduated_on_time" placeholder="Graduated on Time" class="w-full border p-2 rounded" required>
-              <input type="text" name="year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
-
-              <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Save Data</button>
-          </form>
-      </div>
+      // Fetch and display marks for 4.2
+      fetch('../backend/NBA/get_marks.php?criteria=4.2')
+          .then(response => response.json())
+          .then(data => {
+              const container = document.getElementById('marks-content-42');
+              if (data.success) {
+                  container.innerHTML = `
+                      <div class="grid grid-cols-3 gap-4 mb-4">
+                          <div class="bg-blue-50 p-3 rounded">
+                              <p class="text-sm text-gray-600">4.2.1 - Without Backlog</p>
+                              <p class="text-2xl font-bold text-blue-600">${parseFloat(data.marks_421).toFixed(2)} / 15</p>
+                              <p class="text-xs text-gray-500">SI: ${parseFloat(data.success_index_421).toFixed(4)}</p>
+                          </div>
+                          <div class="bg-purple-50 p-3 rounded">
+                              <p class="text-sm text-gray-600">4.2.2 - In Stipulated Time</p>
+                              <p class="text-2xl font-bold text-purple-600">${parseFloat(data.marks_422).toFixed(2)} / 5</p>
+                              <p class="text-xs text-gray-500">SI: ${parseFloat(data.success_index_422).toFixed(4)}</p>
+                          </div>
+                          <div class="bg-green-50 p-3 rounded">
+                              <p class="text-sm text-gray-600">Total 4.2 Marks</p>
+                              <p class="text-3xl font-bold text-green-600">${parseFloat(data.total_marks).toFixed(2)} / 20</p>
+                          </div>
+                      </div>
+                      <p class="text-gray-700 text-sm">Academic Year: ${data.academic_year}</p>
+                  `;
+              } else {
+                  container.innerHTML = '<p class="text-gray-500">No data available yet. Submit the form to calculate marks.</p>';
+              }
+          })
+          .catch(error => {
+              document.getElementById('marks-content-42').innerHTML = '<p class="text-red-500">Error loading marks</p>';
+          });
+      </script>
   <?php } ?>
 
 
