@@ -26,10 +26,10 @@ $title = $sub ?: $criteria;
   <?php if ($main): ?>
     <p class="text-sm text-gray-500 mb-4">Parent: <?= h($main) ?></p>
   <?php endif; ?>
-  <p class="text-gray-500 mb-8">Please enter required details and upload documents for this criteria.</p>
+  <!-- <p class="text-gray-500 mb-8">Please enter required details and upload documents for this criteria.</p> -->
 
   <!-- UNIVERSAL UPLOAD BOX -->
-  <div class="border rounded-lg p-4 mb-8 bg-gray-50">
+  <!-- <div class="border rounded-lg p-4 mb-8 bg-gray-50">
       <h3 class="font-semibold text-gray-700 mb-2">Upload Supporting Document</h3>
       <form method="post" action="../backend/upload_nba.php" enctype="multipart/form-data" class="flex gap-3">
           <input type="hidden" name="criteria" value="<?= h($title) ?>">
@@ -37,7 +37,7 @@ $title = $sub ?: $criteria;
           <button class="bg-blue-600 text-white px-4 py-2 rounded">Upload</button>
       </form>
   </div>
-
+ -->
 
   <!-- ************************************
        MAIN CRITERIA FORMS
