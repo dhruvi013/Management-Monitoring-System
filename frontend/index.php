@@ -297,19 +297,19 @@ $type = $_GET['type'] ?? '';
 
 <?php
 $criteria = [
-    "4 - Student Performance" => [
+"4 - Student Performance" => [
         "4.1 - Enrollment Ratio (20)",
         "4.2 - Success Rate in the Stipulated Period of Program (20)",
         "4.3 - Academic Performance in Second Year (10)",
         "4.4 - Placement and Career Progression (30)",
-        "4.5 - Professional Societies and Activities (20)"
-    ],
-
-    "4.5 - Professional Societies and Activities (20)" => [
+        "4.5 - Professional Societies and Activities (20)",
         "4.5.1 - Professional Chapters and Events (5)",
         "4.5.2 - Publications (Magazine/Newsletter) (5)",
         "4.5.3 - Student Participation in Events (10)"
     ],
+
+
+
 
     "3 - Course Outcomes (CO) & PO Mapping" => [
         "3.1 - CO Attainment",
