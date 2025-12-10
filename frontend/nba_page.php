@@ -497,86 +497,131 @@ $title = $sub ?: $criteria;
   <?php } ?>
 
 
-  <!-- ************************************
-       4.5.2 - Publications (Magazine/Newsletter) (5 marks)
-  ************************************* -->
-  <?php if ($sub === "4.5.2 - Publications (Magazine/Newsletter) (5)") { ?>
-      <div class="p-6 border-l-4 border-pink-500 bg-pink-50 rounded-lg mb-6">
-          <h2 class="text-xl font-bold mb-4 text-pink-800">4.5.2 - Publications (Magazine/Newsletter)</h2>
-          <p class="text-sm text-gray-700 mb-4">Track magazine and newsletter publications</p>
+<!-- ************************************
+     4.5.2 - Publications (Magazine/Newsletter) (5 marks)
+************************************* -->
+<?php if ($sub === "4.5.2 - Publications (Magazine/Newsletter) (5)") { ?>
+    <div class="p-6 border-l-4 border-pink-500 bg-pink-50 rounded-lg mb-6">
+        <h2 class="text-xl font-bold mb-4 text-pink-800">4.5.2 - Publications (Magazine/Newsletter)</h2>
+        <p class="text-sm text-gray-700 mb-4">Track magazine and newsletter publications</p>
 
-          <form method="post" action="../backend/NBA/save_452.php" class="space-y-4">
-              <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
-              
-              <div class="grid grid-cols-2 gap-4">
-                  <div class="bg-blue-50 p-3 rounded">
-                      <label class="font-semibold text-gray-700">Magazine</label>
-                      <select name="magazine" class="w-full border p-2 rounded mt-2" required>
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                      </select>
-                      <input type="number" name="target_freq1" placeholder="Frequency per year" class="w-full border p-2 rounded mt-2" required min="0">
-                      <p class="text-xs text-gray-500 mt-1">Target: 1 per year</p>
-                  </div>
+        <form method="post" action="../backend/NBA/save_452.php" class="space-y-4">
+            <input type="text" name="academic_year" placeholder="Academic Year (e.g., 2023-24)" class="w-full border p-2 rounded" required>
 
-                  <div class="bg-green-50 p-3 rounded">
-                      <label class="font-semibold text-gray-700">Newsletter</label>
-                      <select name="newsletter" class="w-full border p-2 rounded mt-2" required>
-                          <option value="Yes">Yes</option>
-                          <option value="No">No</option>
-                      </select>
-                      <input type="number" name="target_freq2" placeholder="Frequency per year" class="w-full border p-2 rounded mt-2" required min="0">
-                      <p class="text-xs text-gray-500 mt-1">Target: 4 per year</p>
-                  </div>
-              </div>
+            <div class="grid grid-cols-2 gap-4">
 
-              <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
-                  <p class="text-sm font-semibold text-gray-700">Full marks (5) if:</p>
-                  <p class="text-xs text-gray-600 mt-1">Magazine frequency ≥ 1 AND Newsletter frequency ≥ 4</p>
-              </div>
+                <!-- ===================== MAGAZINE ===================== -->
+                <div class="bg-blue-50 p-3 rounded">
+                    <label class="font-semibold text-gray-700">Magazine</label>
+                    <select name="magazine" id="magazine" class="w-full border p-2 rounded mt-2" required>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
 
-              <button class="bg-pink-600 text-white px-4 py-2 rounded w-full">Save Data & Calculate Marks</button>
-          </form>
+                    <!-- Frequency box -->
+                    <div id="mag_freq_box" class="mt-2">
+                        <input type="number" name="target_freq1" placeholder="Frequency per year"
+                            class="w-full border p-2 rounded" min="0">
+                        <p class="text-xs text-gray-500 mt-1">Target: 1 per year</p>
+                    </div>
 
-          <div id="marks-display-452" class="mt-6 p-4 bg-white rounded-lg border-2 border-pink-300">
-              <h3 class="font-bold text-lg mb-2">Calculated Marks</h3>
-              <div id="marks-content-452" class="text-center">
-                  <p class="text-gray-500">Loading...</p>
-              </div>
-          </div>
-      </div>
+                    <!-- Number of magazines (when No) -->
+                    <div id="mag_num_box" class="mt-2 hidden">
+                        <input type="number" name="num_magazine" placeholder="Number of Magazines Published"
+                            class="w-full border p-2 rounded" min="0">
+                        <p class="text-xs text-gray-500 mt-1">Enter how many magazines published</p>
+                    </div>
+                </div>
 
-      <script>
-      fetch('../backend/NBA/get_marks.php?criteria=4.5.2')
-          .then(response => response.json())
-          .then(data => {
-              const container = document.getElementById('marks-content-452');
-              if (data.success) {
-                  container.innerHTML = `
-                      <div class="text-4xl font-bold text-pink-600 mb-2">${parseFloat(data.marks).toFixed(2)} / 5</div>
-                      <div class="grid grid-cols-2 gap-3 mb-3">
-                          <div class="bg-blue-50 p-2 rounded">
-                              <p class="text-xs text-gray-600">Magazine</p>
-                              <p class="text-sm font-bold">${data.magazine}</p>
-                              <p class="text-xs">Frequency: ${data.target_freq1}/year</p>
-                          </div>
-                          <div class="bg-green-50 p-2 rounded">
-                              <p class="text-xs text-gray-600">Newsletter</p>
-                              <p class="text-sm font-bold">${data.newsletter}</p>
-                              <p class="text-xs">Frequency: ${data.target_freq2}/year</p>
-                          </div>
-                      </div>
-                      <p class="text-gray-700 text-sm mt-2">Academic Year: ${data.academic_year}</p>
-                  `;
-              } else {
-                  container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
-              }
-          })
-          .catch(error => {
-              document.getElementById('marks-content-452').innerHTML = '<p class="text-red-500">Error loading marks</p>';
-          });
-      </script>
-  <?php } ?>
+                <!-- ===================== NEWSLETTER ===================== -->
+                <div class="bg-green-50 p-3 rounded">
+                    <label class="font-semibold text-gray-700">Newsletter</label>
+                    <select name="newsletter" id="newsletter" class="w-full border p-2 rounded mt-2" required>
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                    </select>
+
+                    <!-- Frequency box -->
+                    <div id="news_freq_box" class="mt-2">
+                        <input type="number" name="target_freq2" placeholder="Frequency per year"
+                            class="w-full border p-2 rounded" min="0">
+                        <p class="text-xs text-gray-500 mt-1">Target: 4 per year</p>
+                    </div>
+
+                    <!-- Number of newsletters (when No) -->
+                    <div id="news_num_box" class="mt-2 hidden">
+                        <input type="number" name="num_newsletter" placeholder="Number of Newsletters Published"
+                            class="w-full border p-2 rounded" min="0">
+                        <p class="text-xs text-gray-500 mt-1">Enter how many newsletters published</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="bg-yellow-50 p-3 rounded border border-yellow-200">
+                <p class="text-sm font-semibold text-gray-700">Full marks (5) if:</p>
+                <p class="text-xs text-gray-600 mt-1">Magazine frequency ≥ 1 AND Newsletter frequency ≥ 4</p>
+            </div>
+
+            <button class="bg-pink-600 text-white px-4 py-2 rounded w-full">
+                Save Data & Calculate Marks
+            </button>
+        </form>
+
+        <!-- ===================== DISPLAY SAVED MARKS ===================== -->
+        <div id="marks-display-452" class="mt-6 p-4 bg-white rounded-lg border-2 border-pink-300">
+            <h3 class="font-bold text-lg mb-2">Calculated Marks</h3>
+            <div id="marks-content-452" class="text-center">
+                <p class="text-gray-500">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================== SCRIPT ===================== -->
+    <script>
+    // ===================== Magazine Toggle =====================
+    document.getElementById("magazine").addEventListener("change", function() {
+        if (this.value === "No") {
+            document.getElementById("mag_freq_box").classList.add("hidden");
+            document.getElementById("mag_num_box").classList.remove("hidden");
+        } else {
+            document.getElementById("mag_freq_box").classList.remove("hidden");
+            document.getElementById("mag_num_box").classList.add("hidden");
+        }
+    });
+
+    // ===================== Newsletter Toggle =====================
+    document.getElementById("newsletter").addEventListener("change", function() {
+        if (this.value === "No") {
+            document.getElementById("news_freq_box").classList.add("hidden");
+            document.getElementById("news_num_box").classList.remove("hidden");
+        } else {
+            document.getElementById("news_freq_box").classList.remove("hidden");
+            document.getElementById("news_num_box").classList.add("hidden");
+        }
+    });
+
+    // ===================== Fetch Saved Marks =====================
+    fetch('../backend/NBA/get_marks.php?criteria=4.5.2')
+        .then(response => response.json())
+        .then(data => {
+            const container = document.getElementById('marks-content-452');
+            if (data.success) {
+                container.innerHTML = `
+                    <div class="text-4xl font-bold text-pink-600 mb-2">${parseFloat(data.marks).toFixed(2)} / 5</div>
+                    <p class="text-gray-700 text-sm mt-2">Academic Year: ${data.academic_year}</p>
+                `;
+            } else {
+                container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
+            }
+        })
+        .catch(() => {
+            document.getElementById('marks-content-452').innerHTML =
+                '<p class="text-red-500">Error loading marks</p>';
+        });
+    </script>
+
+<?php } ?>
 
 
   <!-- ************************************

@@ -9,9 +9,12 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 // Get form data
 $academic_year = trim($_POST['academic_year'] ?? '');
 $magazine = trim($_POST['magazine'] ?? 'No');
-$target_freq1 = intval($_POST['target_freq1'] ?? 0);
+$target_freq1 = intval($_POST['target_freq1'] ?? 0); // expected target (e.g., 1)
+$num_magazine_post = intval($_POST['num_magazine'] ?? 0); // user input when magazine = No
+
 $newsletter = trim($_POST['newsletter'] ?? 'No');
-$target_freq2 = intval($_POST['target_freq2'] ?? 0);
+$target_freq2 = intval($_POST['target_freq2'] ?? 0); // expected target (e.g., 4)
+$num_newsletter_post = intval($_POST['num_newsletter'] ?? 0); // user input when newsletter = No
 
 // Validate input
 if ($academic_year === '') {
@@ -20,46 +23,79 @@ if ($academic_year === '') {
 }
 
 // ============================================
-// Marking Logic (Total 5 marks)
+//  MARKING LOGIC (TOTAL 5 MARKS)
+//  Magazine → 2.5 Marks
+//  Newsletter → 2.5 Marks
+//  If Yes => num = freq (target); If No => use entered num
+//  Score = min(num / target, 1) * 2.5  (safe for target = 0)
 // ============================================
-// Full marks (5) if:
-// - target_freq1 = 1 (magazine frequency)
-// - target_freq2 = 4 (newsletter frequency)
 
-$marks = 0;
-
-// Check if targets are met
-if ($target_freq1 >= 1 && $target_freq2 >= 4) {
-    $marks = 5;
+// Determine actual numbers to use for calculation
+if ($magazine === "Yes") {
+    // when Yes, number of magazines = specified frequency (target)
+    $num_magazine = $target_freq1;
 } else {
-    // Proportional marking if targets not fully met
-    $magazine_score = ($target_freq1 / 1) * 2.5; // Magazine contributes 2.5 marks
-    $newsletter_score = ($target_freq2 / 4) * 2.5; // Newsletter contributes 2.5 marks
-    
-    $marks = min($magazine_score + $newsletter_score, 5);
+    // when No, use user entered count (expected < target)
+    $num_magazine = max(0, $num_magazine_post);
 }
 
-// Insert into database
-$stmt = $pdo->prepare("INSERT INTO nba_publications_452 (
-    academic_year, magazine, target_freq1, newsletter, target_freq2, marks
-) VALUES (
-    :year, :magazine, :freq1, :newsletter, :freq2, :marks
-)");
+if ($newsletter === "Yes") {
+    $num_newsletter = $target_freq2;
+} else {
+    $num_newsletter = max(0, $num_newsletter_post);
+}
+
+// Calculate magazine score (2.5 marks total)
+if ($target_freq1 > 0) {
+    $ratio_mag = $num_magazine / $target_freq1;
+    if ($ratio_mag < 0) $ratio_mag = 0;
+    $ratio_mag = min($ratio_mag, 1); // cap at 1
+    $magazine_score = $ratio_mag * 2.5;
+} else {
+    // If target is zero/invalid, give full marks if any magazine exists
+    $magazine_score = ($num_magazine > 0) ? 2.5 : 0;
+}
+
+// Calculate newsletter score (2.5 marks total)
+if ($target_freq2 > 0) {
+    $ratio_news = $num_newsletter / $target_freq2;
+    if ($ratio_news < 0) $ratio_news = 0;
+    $ratio_news = min($ratio_news, 1); // cap at 1
+    $newsletter_score = $ratio_news * 2.5;
+} else {
+    $newsletter_score = ($num_newsletter > 0) ? 2.5 : 0;
+}
+
+// Final marks (max 5)
+$marks = $magazine_score + $newsletter_score;
+if ($marks > 5) $marks = 5;
+
+// Insert into DB (make sure table has num_magazine and num_newsletter columns)
+$stmt = $pdo->prepare("
+    INSERT INTO nba_publications_452 
+        (academic_year, magazine, target_freq1, num_magazine,
+         newsletter, target_freq2, num_newsletter, marks)
+    VALUES 
+        (:year, :magazine, :freq1, :num_mag,
+         :newsletter, :freq2, :num_news, :marks)
+");
 
 $stmt->execute([
     ':year' => $academic_year,
     ':magazine' => $magazine,
     ':freq1' => $target_freq1,
+    ':num_mag' => $num_magazine,
     ':newsletter' => $newsletter,
     ':freq2' => $target_freq2,
+    ':num_news' => $num_newsletter,
     ':marks' => $marks
 ]);
 
-// Redirect with success message
+// Redirect with message (show targets and used counts)
 $message = sprintf(
-    "Saved successfully! Magazine Freq: %d | Newsletter Freq: %d | Marks: %.2f/5",
-    $target_freq1,
-    $target_freq2,
+    "Saved! Magazine: %s | Target: %d | Count used: %d | Newsletter: %s | Target: %d | Count used: %d | Marks: %.2f/5",
+    $magazine, $target_freq1, $num_magazine,
+    $newsletter, $target_freq2, $num_newsletter,
     $marks
 );
 

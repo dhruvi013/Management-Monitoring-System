@@ -109,6 +109,12 @@ CREATE TABLE nba_publications_452 (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+ALTER TABLE nba_publications_452
+ADD COLUMN num_magazine INT DEFAULT 0,
+ADD COLUMN num_newsletter INT DEFAULT 0;
+
+
 -- 4.5.3 Student Participation in Events (10 marks)
 CREATE TABLE nba_participation_453 (
   id INT AUTO_INCREMENT PRIMARY KEY,
