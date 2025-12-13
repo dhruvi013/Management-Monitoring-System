@@ -317,8 +317,20 @@ $criteria = [
     ],
 
     "5 - Faculty Information" => [
-        "5.1 - Faculty Qualification",
-        "5.2 - Faculty–Student Ratio",
+        "5.1 - Student-Faculty Ratio (SFR) (20",
+        "5.2 - Faculty Cadre proportion (20",
+        "5.3 - Faculty Qualification (20)",
+        "5.4 - Faculty Retention (10)",
+        "5.5 - Faculty Competency in correlation to program specific criteria (10)",
+        "5.6 - Innovations by the faculty in teaching and learning (10)",
+        "5.7 - Faculty as participants in Faculty development/trainig activities/ STTPS (15)",
+        "5.8 - Reasearch and Development (75)",
+        "5.8.1 - Academic Reasearch (20)",
+        "5.8.2 - Sponsored Research (20)",
+        "5.8.3 - Development Activities (15)",
+        "5.8.4 - Consultancy (from industry) (20)",
+        "5.9 - Faculty performance appraisal and development system (FPADS) (10)",
+        "5.10 - Visiting/ Adjunct/ Emeritus Faculty etc. (10)" ,
     ],
 
     "6 - Infrastructure & Facilities" => [

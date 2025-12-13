@@ -18,14 +18,29 @@ if ($intake <= 0 || $admitted < 0 || $academic_year === '') {
 // Calculate enrollment ratio for this year
 $enrollment_ratio = ($admitted / $intake) * 100;
 
-// Insert current year data
-$stmt = $pdo->prepare("INSERT INTO nba_enrollment_41 (academic_year, intake, admitted, enrollment_ratio, marks) VALUES (:year, :intake, :admitted, :ratio, 0)");
-$stmt->execute([
-    ':year' => $academic_year, 
-    ':intake' => $intake, 
-    ':admitted' => $admitted, 
-    ':ratio' => $enrollment_ratio
-]);
+// Check if ID exists for update
+$id = $_POST['id'] ?? null;
+
+if ($id) {
+    // Update existing record
+    $stmt = $pdo->prepare("UPDATE nba_enrollment_41 SET academic_year = :year, intake = :intake, admitted = :admitted, enrollment_ratio = :ratio WHERE id = :id");
+    $stmt->execute([
+        ':year' => $academic_year, 
+        ':intake' => $intake, 
+        ':admitted' => $admitted, 
+        ':ratio' => $enrollment_ratio,
+        ':id' => $id
+    ]);
+} else {
+    // Insert new record
+    $stmt = $pdo->prepare("INSERT INTO nba_enrollment_41 (academic_year, intake, admitted, enrollment_ratio, marks) VALUES (:year, :intake, :admitted, :ratio, 0)");
+    $stmt->execute([
+        ':year' => $academic_year, 
+        ':intake' => $intake, 
+        ':admitted' => $admitted, 
+        ':ratio' => $enrollment_ratio
+    ]);
+}
 
 // Get last 3 years of data to calculate average
 $stmt = $pdo->query("SELECT enrollment_ratio FROM nba_enrollment_41 ORDER BY created_at DESC LIMIT 3");

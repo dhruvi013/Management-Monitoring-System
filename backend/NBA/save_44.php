@@ -38,22 +38,40 @@ if (($placed + $higher_studies + $entrepreneur) > $final_year_total) {
 $assessment_index = ($placed + $higher_studies + $entrepreneur) / $final_year_total;
 
 // Insert current year data
-$stmt = $pdo->prepare("INSERT INTO nba_placement_44 (
-    academic_year, final_year_total, placed, higher_studies, entrepreneur,
-    assessment_index, marks
-) VALUES (
-    :year, :total, :placed, :higher, :entrepreneur,
-    :index, 0
-)");
-
-$stmt->execute([
-    ':year' => $academic_year,
-    ':total' => $final_year_total,
-    ':placed' => $placed,
-    ':higher' => $higher_studies,
-    ':entrepreneur' => $entrepreneur,
-    ':index' => $assessment_index
-]);
+// Check/Insert/Update
+if (!empty($_POST['id'])) {
+    $stmt = $pdo->prepare("UPDATE nba_placement_44 SET 
+        academic_year=:year, final_year_total=:total, placed=:placed,
+        higher_studies=:higher, entrepreneur=:entrepreneur, assessment_index=:index
+        WHERE id=:id");
+        
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':total' => $final_year_total,
+        ':placed' => $placed,
+        ':higher' => $higher_studies,
+        ':entrepreneur' => $entrepreneur,
+        ':index' => $assessment_index,
+        ':id' => $_POST['id']
+    ]);
+} else {
+    $stmt = $pdo->prepare("INSERT INTO nba_placement_44 (
+        academic_year, final_year_total, placed, higher_studies, entrepreneur,
+        assessment_index, marks
+    ) VALUES (
+        :year, :total, :placed, :higher, :entrepreneur,
+        :index, 0
+    )");
+    
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':total' => $final_year_total,
+        ':placed' => $placed,
+        ':higher' => $higher_studies,
+        ':entrepreneur' => $entrepreneur,
+        ':index' => $assessment_index
+    ]);
+}
 
 // ============================================
 // Get last 3 years of data to calculate average

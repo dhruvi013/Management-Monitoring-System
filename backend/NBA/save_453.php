@@ -23,24 +23,47 @@ if ($academic_year === '' || $total_participation <= 0) {
 $within_state_percentage = ($participation_within_state / $total_participation) * 100;
 $outside_state_percentage = ($participation_outside_state / $total_participation) * 100;
 
-// Insert current year data
-$stmt = $pdo->prepare("INSERT INTO nba_participation_453 (
-    academic_year, total_participation, participation_within_state,
-    participation_outside_state, awards, within_state_percentage,
-    outside_state_percentage, marks
-) VALUES (
-    :year, :total, :within, :outside, :awards, :within_pct, :outside_pct, 0
-)");
+// Check/Insert/Update
+$id = $_POST['id'] ?? null;
+if (!empty($id)) {
+    // Update existing record
+    $stmt = $pdo->prepare("UPDATE nba_participation_453 SET
+        academic_year=:year, total_participation=:total,
+        participation_within_state=:within, participation_outside_state=:outside,
+        awards=:awards, within_state_percentage=:within_pct, 
+        outside_state_percentage=:outside_pct
+        WHERE id=:id");
 
-$stmt->execute([
-    ':year' => $academic_year,
-    ':total' => $total_participation,
-    ':within' => $participation_within_state,
-    ':outside' => $participation_outside_state,
-    ':awards' => $awards,
-    ':within_pct' => $within_state_percentage,
-    ':outside_pct' => $outside_state_percentage
-]);
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':total' => $total_participation,
+        ':within' => $participation_within_state,
+        ':outside' => $participation_outside_state,
+        ':awards' => $awards,
+        ':within_pct' => $within_state_percentage,
+        ':outside_pct' => $outside_state_percentage,
+        ':id' => $id
+    ]);
+} else {
+    // Insert new record
+    $stmt = $pdo->prepare("INSERT INTO nba_participation_453 (
+        academic_year, total_participation, 
+        participation_within_state, participation_outside_state,
+        awards, within_state_percentage, outside_state_percentage, marks
+    ) VALUES (
+        :year, :total, :within, :outside, :awards, :within_pct, :outside_pct, 0
+    )");
+
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':total' => $total_participation,
+        ':within' => $participation_within_state,
+        ':outside' => $participation_outside_state,
+        ':awards' => $awards,
+        ':within_pct' => $within_state_percentage,
+        ':outside_pct' => $outside_state_percentage
+    ]);
+}
 
 // ============================================
 // Get last 4 years of data for calculation

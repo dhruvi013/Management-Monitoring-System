@@ -12,6 +12,8 @@ $admitted_degree = intval($_POST['admitted_degree'] ?? 0);
 $admitted_d2d = intval($_POST['admitted_d2d'] ?? 0);
 $graduated_wo_back = intval($_POST['graduated_wo_back'] ?? 0);
 $graduated_w_back = intval($_POST['graduated_w_back'] ?? 0);
+$id_421 = $_POST['id_421'] ?? null;
+$id_422 = $_POST['id_422'] ?? null;
 
 // Validate input
 if ($academic_year === '' || $admitted_degree < 0 || $admitted_d2d < 0 || $graduated_wo_back < 0 || $graduated_w_back < 0) {
@@ -34,16 +36,29 @@ if ($total_admitted == 0) {
 // Calculate success index for 4.2.1
 $success_index_421 = $graduated_wo_back / $total_admitted;
 
-// Insert into 4.2.1 table
-$stmt = $pdo->prepare("INSERT INTO nba_success_421 (academic_year, admitted_degree, admitted_d2d, total_admitted, graduated_wo_back, success_index, marks) VALUES (:year, :deg, :d2d, :total, :grad, :si, 0)");
-$stmt->execute([
-    ':year' => $academic_year,
-    ':deg' => $admitted_degree,
-    ':d2d' => $admitted_d2d,
-    ':total' => $total_admitted,
-    ':grad' => $graduated_wo_back,
-    ':si' => $success_index_421
-]);
+// Check/Insert/Update 4.2.1
+if (!empty($_POST['id_421'])) {
+    $stmt = $pdo->prepare("UPDATE nba_success_421 SET academic_year=:year, admitted_degree=:deg, admitted_d2d=:d2d, total_admitted=:total, graduated_wo_back=:grad, success_index=:si WHERE id=:id");
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':deg' => $admitted_degree,
+        ':d2d' => $admitted_d2d,
+        ':total' => $total_admitted,
+        ':grad' => $graduated_wo_back,
+        ':si' => $success_index_421,
+        ':id' => $_POST['id_421']
+    ]);
+} else {
+    $stmt = $pdo->prepare("INSERT INTO nba_success_421 (academic_year, admitted_degree, admitted_d2d, total_admitted, graduated_wo_back, success_index, marks) VALUES (:year, :deg, :d2d, :total, :grad, :si, 0)");
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':deg' => $admitted_degree,
+        ':d2d' => $admitted_d2d,
+        ':total' => $total_admitted,
+        ':grad' => $graduated_wo_back,
+        ':si' => $success_index_421
+    ]);
+}
 
 // Get last 3 batches for 4.2.1
 $stmt = $pdo->query("SELECT success_index FROM nba_success_421 ORDER BY created_at DESC LIMIT 3");
@@ -69,16 +84,29 @@ $pdo->prepare("UPDATE nba_success_421 SET marks = :marks")->execute([':marks' =>
 // graduated_w_back represents students who graduated in stipulated time
 $success_index_422 = $graduated_w_back / $total_admitted;
 
-// Insert into 4.2.2 table
-$stmt = $pdo->prepare("INSERT INTO nba_success_422 (academic_year, admitted_degree, admitted_d2d, total_admitted, graduated_w_back, success_index, marks) VALUES (:year, :deg, :d2d, :total, :grad, :si, 0)");
-$stmt->execute([
-    ':year' => $academic_year,
-    ':deg' => $admitted_degree,
-    ':d2d' => $admitted_d2d,
-    ':total' => $total_admitted,
-    ':grad' => $graduated_w_back,
-    ':si' => $success_index_422
-]);
+// Check/Insert/Update 4.2.2
+if (!empty($_POST['id_422'])) {
+    $stmt = $pdo->prepare("UPDATE nba_success_422 SET academic_year=:year, admitted_degree=:deg, admitted_d2d=:d2d, total_admitted=:total, graduated_w_back=:grad, success_index=:si WHERE id=:id");
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':deg' => $admitted_degree,
+        ':d2d' => $admitted_d2d,
+        ':total' => $total_admitted,
+        ':grad' => $graduated_w_back,
+        ':si' => $success_index_422,
+        ':id' => $_POST['id_422']
+    ]);
+} else {
+    $stmt = $pdo->prepare("INSERT INTO nba_success_422 (academic_year, admitted_degree, admitted_d2d, total_admitted, graduated_w_back, success_index, marks) VALUES (:year, :deg, :d2d, :total, :grad, :si, 0)");
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':deg' => $admitted_degree,
+        ':d2d' => $admitted_d2d,
+        ':total' => $total_admitted,
+        ':grad' => $graduated_w_back,
+        ':si' => $success_index_422
+    ]);
+}
 
 // Get last 3 batches for 4.2.2
 $stmt = $pdo->query("SELECT success_index FROM nba_success_422 ORDER BY created_at DESC LIMIT 3");

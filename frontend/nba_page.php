@@ -14,6 +14,332 @@ $title = $sub ?: $criteria;
   <meta charset="utf-8">
   <title><?= h($title) ?></title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .nba-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+    .nba-table th, .nba-table td { border: 1px solid #e2e8f0; padding: 8px; text-align: left; }
+    .nba-table th { background-color: #f8fafc; font-weight: 600; }
+    .nba-table tr:nth-child(even) { background-color: #f8fafc; }
+    .delete-btn { color: #ef4444; font-weight: bold; cursor: pointer; }
+    .delete-btn:hover { text-decoration: underline; }
+  </style>
+  <script>
+    // Store table data globally to access for editing
+    window.tableData = {};
+
+    function editRow(criteria, index) {
+        const row = window.tableData[criteria][index];
+        if (!row) return;
+
+        // Scroll to form
+        const form = document.querySelector(`div[id="table-container-${criteria}"]`).previousElementSibling.previousElementSibling; 
+        
+        let targetForm;
+        
+        if(criteria === '4.1') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_41.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="intake"]').value = row.intake;
+            targetForm.querySelector('[name="admitted"]').value = row.admitted;
+            // Set ID
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if(criteria.startsWith('4.2')) {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_42.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="admitted_degree"]').value = row.admitted_degree || '';
+            targetForm.querySelector('[name="admitted_d2d"]').value = row.admitted_d2d || '';
+            
+            // Trigger calculation
+            if(window.calculateTotal) window.calculateTotal();
+            
+            if(criteria === '4.2.1') {
+                targetForm.querySelector('[name="graduated_wo_back"]').value = row.graduated_wo_back;
+                let idInput = targetForm.querySelector('[name="id_421"]');
+                if(!idInput) {
+                    idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.name = 'id_421';
+                    targetForm.appendChild(idInput);
+                }
+                idInput.value = row.id;
+            } else {
+                targetForm.querySelector('[name="graduated_w_back"]').value = row.graduated_w_back;
+                let idInput = targetForm.querySelector('[name="id_422"]');
+                if(!idInput) {
+                    idInput = document.createElement('input');
+                    idInput.type = 'hidden';
+                    idInput.name = 'id_422';
+                    targetForm.appendChild(idInput);
+                }
+                idInput.value = row.id;
+            }
+        }
+        else if(criteria === '4.3') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_43.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="admitted_degree"]').value = row.admitted_degree;
+            targetForm.querySelector('[name="admitted_d2d"]').value = row.admitted_d2d;
+            targetForm.querySelector('[name="sem3_avg_sgpa"]').value = row.sem3_avg_sgpa;
+            targetForm.querySelector('[name="sem4_avg_sgpa"]').value = row.sem4_avg_sgpa;
+            targetForm.querySelector('[name="sem3_credit"]').value = row.sem3_credit;
+            targetForm.querySelector('[name="sem4_credit"]').value = row.sem4_credit;
+            targetForm.querySelector('[name="success_2ndyear"]').value = row.success_2ndyear;
+            targetForm.querySelector('[name="students_appeared"]').value = row.students_appeared;
+
+            if(window.calculateTotal43) window.calculateTotal43();
+            if(window.calculateMeanCGPA) window.calculateMeanCGPA();
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if(criteria === '4.4') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_44.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="final_year_total"]').value = row.final_year_total;
+            targetForm.querySelector('[name="placed"]').value = row.placed;
+            targetForm.querySelector('[name="higher_studies"]').value = row.higher_studies;
+            targetForm.querySelector('[name="entrepreneur"]').value = row.entrepreneur;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if(criteria === '4.5.1') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_451.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="no_of_chapters"]').value = row.no_of_chapters;
+            targetForm.querySelector('[name="international_events"]').value = row.international_events;
+            targetForm.querySelector('[name="national_events"]').value = row.national_events;
+            targetForm.querySelector('[name="state_events"]').value = row.state_events;
+            targetForm.querySelector('[name="dept_events"]').value = row.dept_events;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if(criteria === '4.5.2') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_452.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="magazine"]').value = row.magazine;
+            targetForm.querySelector('[name="magazine"]').dispatchEvent(new Event('change'));
+            
+            targetForm.querySelector('[name="newsletter"]').value = row.newsletter;
+            targetForm.querySelector('[name="newsletter"]').dispatchEvent(new Event('change'));
+
+            if(row.magazine === 'Yes') {
+                 targetForm.querySelector('[name="target_freq1"]').value = row.target_freq1;
+            }
+            targetForm.querySelector('[name="num_magazine"]').value = row.num_magazine;
+
+
+            if(row.newsletter === 'Yes') {
+                 targetForm.querySelector('[name="target_freq2"]').value = row.target_freq2;
+            }
+            targetForm.querySelector('[name="num_newsletter"]').value = row.num_newsletter;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if(criteria === '4.5.3') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_453.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="total_participation"]').value = row.total_participation;
+            targetForm.querySelector('[name="participation_within_state"]').value = row.participation_within_state;
+            targetForm.querySelector('[name="participation_outside_state"]').value = row.participation_outside_state;
+            targetForm.querySelector('[name="awards"]').value = row.awards;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        // Criterion 5 Handlers
+        else if (['5.1', '5.2', '5.3', '5.4', '5.5', '5.6', '5.7'].includes(criteria)) {
+            const cleanCrit = criteria.replace('.', ''); 
+            targetForm = document.querySelector(`form[action="../backend/NBA/save_${cleanCrit}.php"]`);
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="details"]').value = row.details;
+            targetForm.querySelector('[name="value"]').value = row.value;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '5.8') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_58.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="innovation"]').value = row.innovation;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (['5.8.1', '5.8.2'].includes(criteria)) {
+             const cleanCrit = criteria.replace(/\./g, '');
+             targetForm = document.querySelector(`form[action="../backend/NBA/save_${cleanCrit}.php"]`);
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="details"]').value = row.details;
+             targetForm.querySelector('[name="marks"]').value = row.marks;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '5.9') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_59.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="details"]').value = row.details;
+             targetForm.querySelector('[name="hours"]').value = row.hours;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '5.10') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_510.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="topic"]').value = row.topic;
+             targetForm.querySelector('[name="publication"]').value = row.publication;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+
+        if(targetForm) {
+            targetForm.scrollIntoView({ behavior: 'smooth' });
+            const btn = targetForm.querySelector('button');
+            if(btn) {
+                btn.innerText = "Update Data";
+                btn.className = "w-full bg-yellow-600 text-white p-2 rounded hover:bg-yellow-700 transition duration-200 shadow-md transform hover:scale-105";
+            }
+        }
+    }
+
+    async function deleteRow(id, criteria) {
+        if(!confirm('Are you sure you want to delete this record?')) return;
+        
+        try {
+            const formData = { id: id, criteria: criteria };
+            const response = await fetch('../backend/NBA/delete_data.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+            if(data.success) {
+                alert('Record deleted successfully');
+                location.reload(); 
+            } else {
+                alert('Error: ' + data.message);
+            }
+        } catch(e) {
+            console.error(e);
+            alert('An error occurred');
+        }
+    }
+
+    async function loadTable(criteria, containerId, columns) {
+        try {
+            const response = await fetch(`../backend/NBA/get_table_data.php?criteria=${criteria}`);
+            const data = await response.json();
+            const container = document.getElementById(containerId);
+            
+            if(data.success && data.data.length > 0) {
+                // Store data
+                window.tableData[criteria] = data.data;
+
+                let html = '<div class="overflow-x-auto"><table class="nba-table"><thead><tr>';
+                
+                // Headers
+                columns.forEach(col => {
+                    html += `<th>${col.label}</th>`;
+                });
+                html += '<th>Action</th></tr></thead><tbody>';
+                
+                // Rows
+                data.data.forEach((row, index) => {
+                    html += '<tr>';
+                    columns.forEach(col => {
+                        let val = row[col.key];
+                        if(col.format) val = col.format(val);
+                        html += `<td>${val !== undefined ? val : ''}</td>`;
+                    });
+                    html += `<td>
+                        <button onclick="editRow('${criteria}', ${index})" class="text-blue-600 font-bold hover:underline mr-2">Update</button>
+                        <button onclick="deleteRow(${row.id}, '${criteria}')" class="delete-btn">Delete</button>
+                    </td></tr>`;
+                });
+                
+                html += '</tbody></table></div>';
+                container.innerHTML = html;
+            } else {
+                container.innerHTML = '<p class="text-sm text-gray-500 mt-2">No records found.</p>';
+            }
+        } catch(e) {
+            console.error(e);
+            document.getElementById(containerId).innerHTML = '<p class="text-red-500">Error loading data.</p>';
+        }
+    }
+  </script>
 </head>
 
 <body class="bg-gray-100 p-6">
@@ -43,7 +369,7 @@ $title = $sub ?: $criteria;
        MAIN CRITERIA FORMS
   ************************************* -->
 
-  <?php if ($sub === "4.1 - Enrollment Ratio (20)") { ?>
+  <?php if ($title === "4.1 - Enrollment Ratio (20)") { ?>
       <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-blue-800">4.1 - Enrollment Ratio Form</h2>
 
@@ -62,6 +388,11 @@ $title = $sub ?: $criteria;
               <div id="marks-content-41" class="text-center">
                   <p class="text-gray-500">Loading...</p>
               </div>
+          </div>
+          
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-4.1"></div>
           </div>
       </div>
 
@@ -94,6 +425,15 @@ $title = $sub ?: $criteria;
           .catch(error => {
               document.getElementById('marks-content-41').innerHTML = '<p class="text-red-500">Error loading marks</p>';
           });
+
+          // Load Table 4.1
+          loadTable('4.1', 'table-container-4.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'intake', label: 'Intake' },
+              { key: 'admitted', label: 'Admitted' },
+              { key: 'enrollment_ratio', label: 'Ratio (%)', format: v => parseFloat(v).toFixed(2) },
+              { key: 'marks', label: 'Marks', format: v => parseFloat(v).toFixed(2) }
+          ]);
       </script>
   <?php } ?>
 
@@ -103,7 +443,7 @@ $title = $sub ?: $criteria;
   <!-- ************************************
        4.2 - Success Rate Form (Combined)
   ************************************* -->
-  <?php if ($sub === "4.2 - Success Rate in the Stipulated Period of Program (20)") { ?>
+  <?php if ($title === "4.2 - Success Rate in the Stipulated Period of Program (20)") { ?>
       <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-green-800">4.2 - Success Rate Form</h2>
           <p class="text-sm text-gray-700 mb-4">This form calculates both 4.2.1 (Success without backlog - 15 marks) and 4.2.2 (Success in stipulated period - 5 marks)</p>
@@ -135,6 +475,16 @@ $title = $sub ?: $criteria;
               <div id="marks-content-42" class="text-center">
                   <p class="text-gray-500">Loading...</p>
               </div>
+          </div>
+
+          <div class="mt-8 bg-blue-50 p-4 rounded">
+              <h3 class="font-bold text-lg text-gray-700">4.2.1 Records (Without Backlog)</h3>
+              <div id="table-container-4.2.1"></div>
+          </div>
+
+          <div class="mt-8 bg-purple-50 p-4 rounded">
+              <h3 class="font-bold text-lg text-gray-700">4.2.2 Records (In Stipulated Time)</h3>
+              <div id="table-container-4.2.2"></div>
           </div>
       </div>
 
@@ -181,6 +531,26 @@ $title = $sub ?: $criteria;
           .catch(error => {
               document.getElementById('marks-content-42').innerHTML = '<p class="text-red-500">Error loading marks</p>';
           });
+
+          // Load Tables 4.2
+          loadTable('4.2.1', 'table-container-4.2.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'admitted_degree', label: 'Degree' },
+              { key: 'admitted_d2d', label: 'D2D' },
+              { key: 'total_admitted', label: 'Total' },
+              { key: 'graduated_wo_back', label: 'Grad W/O Back' },
+              { key: 'success_index', label: 'SI', format: v => parseFloat(v).toFixed(2) },
+              { key: 'marks', label: 'Marks', format: v => parseFloat(v).toFixed(2) }
+          ]);
+          loadTable('4.2.2', 'table-container-4.2.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'admitted_degree', label: 'Degree' },
+              { key: 'admitted_d2d', label: 'D2D' },
+              { key: 'total_admitted', label: 'Total' },
+              { key: 'graduated_w_back', label: 'Grad In Time' },
+              { key: 'success_index', label: 'SI', format: v => parseFloat(v).toFixed(2) },
+              { key: 'marks', label: 'Marks', format: v => parseFloat(v).toFixed(2) }
+          ]);
       </script>
   <?php } ?>
 
@@ -190,7 +560,7 @@ $title = $sub ?: $criteria;
   <!-- ************************************
        4.3 - Academic Performance in Second Year (10 marks)
   ************************************* -->
-  <?php if ($sub === "4.3 - Academic Performance in Second Year (10)") { ?>
+  <?php if ($title === "4.3 - Academic Performance in Second Year (10)") { ?>
       <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-purple-800">4.3 - Academic Performance in Second Year</h2>
           <p class="text-sm text-gray-700 mb-4">Calculate Academic Performance Index (API) based on CGPA and success rate</p>
@@ -238,6 +608,11 @@ $title = $sub ?: $criteria;
               <div id="marks-content-43" class="text-center">
                   <p class="text-gray-500">Loading...</p>
               </div>
+          </div>
+          
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-4.3"></div>
           </div>
       </div>
 
@@ -293,6 +668,16 @@ $title = $sub ?: $criteria;
           .catch(error => {
               document.getElementById('marks-content-43').innerHTML = '<p class="text-red-500">Error loading marks</p>';
           });
+          
+          loadTable('4.3', 'table-container-4.3', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'total_admitted', label: 'Total Admitted' },
+              { key: 'success_2ndyear', label: 'Success 2nd Yr' },
+              { key: 'api', label: 'API', format: v => parseFloat(v).toFixed(2) },
+              { key: 'total_mean_cgpa', label: 'Mean CGPA', format: v => parseFloat(v).toFixed(2) },
+              { key: 'success_rate', label: 'Success Rate (%)', format: v => parseFloat(v).toFixed(2) },
+              { key: 'marks', label: 'Marks', format: v => parseFloat(v).toFixed(2) }
+          ]);
       </script>
   <?php } ?>
 
@@ -300,7 +685,7 @@ $title = $sub ?: $criteria;
   <!-- ************************************
        4.4 - Placement and Career Progression (30 marks)
   ************************************* -->
-  <?php if ($sub === "4.4 - Placement and Career Progression (30)") { ?>
+  <?php if ($title === "4.4 - Placement and Career Progression (30)") { ?>
       <div class="p-6 border-l-4 border-teal-500 bg-teal-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-teal-800">4.4 - Placement and Career Progression</h2>
           <p class="text-sm text-gray-700 mb-4">Track placements, higher studies, and entrepreneurship for final year students</p>
@@ -349,6 +734,11 @@ $title = $sub ?: $criteria;
               <div id="marks-content-44" class="text-center">
                   <p class="text-gray-500">Loading...</p>
               </div>
+          </div>
+
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-4.4"></div>
           </div>
       </div>
 
@@ -404,6 +794,16 @@ $title = $sub ?: $criteria;
           .catch(error => {
               document.getElementById('marks-content-44').innerHTML = '<p class="text-red-500">Error loading marks</p>';
           });
+
+          loadTable('4.4', 'table-container-4.4', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'final_year_total', label: 'Final Yr Total' },
+              { key: 'placed', label: 'Placed' },
+              { key: 'higher_studies', label: 'Higher Studies' },
+              { key: 'entrepreneur', label: 'Entrepreneur' },
+              { key: 'assessment_index', label: 'Index', format: v => parseFloat(v).toFixed(2) },
+              { key: 'marks', label: 'Marks', format: v => parseFloat(v).toFixed(2) }
+          ]);
       </script>
   <?php } ?>
 
@@ -413,7 +813,7 @@ $title = $sub ?: $criteria;
   <!-- ************************************
        4.5.1 - Professional Chapters and Events (5 marks)
   ************************************* -->
-  <?php if ($sub === "4.5.1 - Professional Chapters and Events (5)") { ?>
+  <?php if ($title === "4.5.1 - Professional Chapters and Events (5)") { ?>
       <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-indigo-800">4.5.1 - Professional Chapters and Events</h2>
           <p class="text-sm text-gray-700 mb-4">Track professional society chapters and organized events</p>
@@ -462,6 +862,11 @@ $title = $sub ?: $criteria;
                   <p class="text-gray-500">Loading...</p>
               </div>
           </div>
+
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-4.5.1"></div>
+          </div>
       </div>
 
       <script>
@@ -493,6 +898,18 @@ $title = $sub ?: $criteria;
           .catch(error => {
               document.getElementById('marks-content-451').innerHTML = '<p class="text-red-500">Error loading marks</p>';
           });
+
+          loadTable('4.5.1', 'table-container-4.5.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'no_of_chapters', label: 'Chapters' },
+              { key: 'international_events', label: 'Intl Events' },
+              { key: 'national_events', label: 'Nat Events' },
+              { key: 'state_events', label: 'State Events' },
+              { key: 'dept_events', label: 'Dept Events' },
+              { key: 'marks_a', label: 'Marks A' },
+              { key: 'marks_b', label: 'Marks B' },
+              { key: 'total_marks', label: 'Total Marks' }
+          ]);
       </script>
   <?php } ?>
 
@@ -500,7 +917,7 @@ $title = $sub ?: $criteria;
 <!-- ************************************
      4.5.2 - Publications (Magazine/Newsletter) (5 marks)
 ************************************* -->
-<?php if ($sub === "4.5.2 - Publications (Magazine/Newsletter) (5)") { ?>
+<?php if ($title === "4.5.2 - Publications (Magazine/Newsletter) (5)") { ?>
     <div class="p-6 border-l-4 border-pink-500 bg-pink-50 rounded-lg mb-6">
         <h2 class="text-xl font-bold mb-4 text-pink-800">4.5.2 - Publications (Magazine/Newsletter)</h2>
         <p class="text-sm text-gray-700 mb-4">Track magazine and newsletter publications</p>
@@ -575,6 +992,11 @@ $title = $sub ?: $criteria;
                 <p class="text-gray-500">Loading...</p>
             </div>
         </div>
+
+        <div class="mt-8">
+            <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+            <div id="table-container-4.5.2"></div>
+        </div>
     </div>
 
     <!-- ===================== SCRIPT ===================== -->
@@ -619,6 +1041,17 @@ $title = $sub ?: $criteria;
             document.getElementById('marks-content-452').innerHTML =
                 '<p class="text-red-500">Error loading marks</p>';
         });
+
+        loadTable('4.5.2', 'table-container-4.5.2', [
+            { key: 'academic_year', label: 'Year' },
+            { key: 'magazine', label: 'Magazine' },
+            { key: 'target_freq1', label: 'Freq (Mag)' },
+            { key: 'num_magazine', label: 'Num (Mag)' },
+            { key: 'newsletter', label: 'Newsletter' },
+            { key: 'target_freq2', label: 'Freq (News)' },
+            { key: 'num_newsletter', label: 'Num (News)' },
+            { key: 'marks', label: 'Marks' }
+        ]);
     </script>
 
 <?php } ?>
@@ -627,7 +1060,7 @@ $title = $sub ?: $criteria;
   <!-- ************************************
        4.5.3 - Student Participation in Events (10 marks)
   ************************************* -->
-  <?php if ($sub === "4.5.3 - Student Participation in Events (10)") { ?>
+  <?php if ($title === "4.5.3 - Student Participation in Events (10)") { ?>
       <div class="p-6 border-l-4 border-orange-500 bg-orange-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-orange-800">4.5.3 - Student Participation in Events</h2>
           <p class="text-sm text-gray-700 mb-4">Track student participation and awards (4-year average)</p>
@@ -670,6 +1103,11 @@ $title = $sub ?: $criteria;
               <div id="marks-content-453" class="text-center">
                   <p class="text-gray-500">Loading...</p>
               </div>
+          </div>
+
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-4.5.3"></div>
           </div>
       </div>
 
@@ -722,11 +1160,22 @@ $title = $sub ?: $criteria;
           .catch(error => {
               document.getElementById('marks-content-453').innerHTML = '<p class="text-red-500">Error loading marks</p>';
           });
+
+          loadTable('4.5.3', 'table-container-4.5.3', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'total_participation', label: 'Total Part.' },
+              { key: 'participation_within_state', label: 'Within State' },
+              { key: 'participation_outside_state', label: 'Outside State' },
+              { key: 'within_state_percentage', label: 'Within %' },
+              { key: 'outside_state_percentage', label: 'Outside %' },
+              { key: 'awards', label: 'Awards' },
+              { key: 'marks', label: 'Marks' }
+          ]);
       </script>
   <?php } ?>
 
   <!-- 3.1 CO Attainment -->
-  <?php if ($sub === "3.1 - CO Attainment") { ?>
+  <?php if ($title === "3.1 - CO Attainment") { ?>
       <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-purple-800">3.1 - CO Attainment Form</h2>
 
@@ -743,7 +1192,7 @@ $title = $sub ?: $criteria;
 
 
   <!-- 3.2 PO Mapping -->
-  <?php if ($sub === "3.2 - PO Mapping") { ?>
+  <?php if ($title === "3.2 - PO Mapping") { ?>
       <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-indigo-800">3.2 - PO Mapping Form</h2>
 
@@ -760,7 +1209,7 @@ $title = $sub ?: $criteria;
 
 
   <!-- Placement -->
-  <?php if ($sub === "4.3.1 - Placements") { ?>
+  <?php if ($title === "4.3.1 - Placements") { ?>
       <div class="p-6 border-l-4 border-teal-500 bg-teal-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-teal-800">4.3.1 - Placement Details</h2>
 
@@ -774,6 +1223,297 @@ $title = $sub ?: $criteria;
       </div>
   <?php } ?>
 
+
+
+  <!-- ************************************
+       CRITERION 5 - Faculty Information
+  ************************************* -->
+
+  <!-- 5.1 -->
+  <?php if (strpos($title, "5.1") === 0) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_51.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.1', 'table-container-5.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.2 -->
+  <?php if (strpos($title, "5.2") === 0) { ?>
+      <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-green-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_52.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.2', 'table-container-5.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.3 -->
+  <?php if (strpos($title, "5.3") === 0) { ?>
+      <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-purple-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_53.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-purple-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.3"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.3', 'table-container-5.3', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.4 -->
+  <?php if (strpos($title, "5.4") === 0) { ?>
+      <div class="p-6 border-l-4 border-teal-500 bg-teal-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-teal-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_54.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-teal-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.4"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.4', 'table-container-5.4', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.5 -->
+  <?php if (strpos($title, "5.5") === 0) { ?>
+      <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-indigo-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_55.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.5"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.5', 'table-container-5.5', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.6 -->
+  <?php if (strpos($title, "5.6") === 0) { ?>
+      <div class="p-6 border-l-4 border-pink-500 bg-pink-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-pink-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_56.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-pink-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.6"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.6', 'table-container-5.6', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.7 -->
+  <?php if (strpos($title, "5.7") === 0) { ?>
+      <div class="p-6 border-l-4 border-orange-500 bg-orange-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-orange-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_57.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
+              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <button class="bg-orange-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.7"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.7', 'table-container-5.7', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'value', label: 'Value' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.8 (General) -->
+  <?php if ($title === "5.8 - Faculty Innovations") { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_58.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="innovation" placeholder="Innovation Details" class="w-full border p-2 rounded">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.8"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.8', 'table-container-5.8', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'innovation', label: 'Innovation' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.8.1 -->
+  <?php if (strpos($title, "5.8.1") === 0) { ?>
+      <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-green-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_581.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Teaching Learning Process Details" class="w-full border p-2 rounded">
+              <input type="number" name="marks" placeholder="Marks claimed" class="w-full border p-2 rounded">
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.8.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.8.1', 'table-container-5.8.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'marks', label: 'Marks' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.8.2 -->
+  <?php if (strpos($title, "5.8.2") === 0) { ?>
+      <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-purple-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_582.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Assessment & Evaluation Details" class="w-full border p-2 rounded">
+              <input type="number" name="marks" placeholder="Marks claimed" class="w-full border p-2 rounded">
+              <button class="bg-purple-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.8.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.8.2', 'table-container-5.8.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'marks', label: 'Marks' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.9 -->
+  <?php if (strpos($title, "5.9") === 0) { ?>
+      <div class="p-6 border-l-4 border-teal-500 bg-teal-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-teal-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_59.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="details" placeholder="Faculty Name" class="w-full border p-2 rounded">
+              <input type="text" name="hours" placeholder="Hours" class="w-full border p-2 rounded">
+              <button class="bg-teal-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.9"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.9', 'table-container-5.9', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Name' },
+              { key: 'hours', label: 'Hours' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 5.10 -->
+  <?php if (strpos($title, "5.10") === 0) { ?>
+      <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-indigo-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_510.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="topic" placeholder="Research Topic" class="w-full border p-2 rounded">
+              <input type="text" name="publication" placeholder="Publication" class="w-full border p-2 rounded">
+              <button class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-5.10"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('5.10', 'table-container-5.10', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'topic', label: 'Topic' },
+              { key: 'publication', label: 'Publication' }
+          ]);
+      </script>
+  <?php } ?>
 
 </div>
 </body>

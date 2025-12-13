@@ -71,25 +71,44 @@ $marks = $magazine_score + $newsletter_score;
 if ($marks > 5) $marks = 5;
 
 // Insert into DB (make sure table has num_magazine and num_newsletter columns)
-$stmt = $pdo->prepare("
-    INSERT INTO nba_publications_452 
-        (academic_year, magazine, target_freq1, num_magazine,
-         newsletter, target_freq2, num_newsletter, marks)
-    VALUES 
-        (:year, :magazine, :freq1, :num_mag,
-         :newsletter, :freq2, :num_news, :marks)
-");
+// Check/Insert/Update
+if (!empty($_POST['id'])) {
+    $stmt = $pdo->prepare("UPDATE nba_publications_452 SET 
+        academic_year=:year, magazine=:mag, target_freq1=:freq1, num_magazine=:num1,
+        newsletter=:news, target_freq2=:freq2, num_newsletter=:num2, marks=:marks
+        WHERE id=:id");
+        
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':mag' => $magazine,
+        ':freq1' => $target_freq1,
+        ':num1' => $num_magazine,
+        ':news' => $newsletter,
+        ':freq2' => $target_freq2,
+        ':num2' => $num_newsletter,
+        ':marks' => $marks,
+        ':id' => $_POST['id']
+    ]);
+} else {
+    $stmt = $pdo->prepare("INSERT INTO nba_publications_452 (
+        academic_year, magazine, target_freq1, num_magazine,
+        newsletter, target_freq2, num_newsletter, marks
+    ) VALUES (
+        :year, :mag, :freq1, :num1,
+        :news, :freq2, :num2, :marks
+    )");
 
-$stmt->execute([
-    ':year' => $academic_year,
-    ':magazine' => $magazine,
-    ':freq1' => $target_freq1,
-    ':num_mag' => $num_magazine,
-    ':newsletter' => $newsletter,
-    ':freq2' => $target_freq2,
-    ':num_news' => $num_newsletter,
-    ':marks' => $marks
-]);
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':mag' => $magazine,
+        ':freq1' => $target_freq1,
+        ':num1' => $num_magazine,
+        ':news' => $newsletter,
+        ':freq2' => $target_freq2,
+        ':num2' => $num_newsletter,
+        ':marks' => $marks
+    ]);
+}
 
 // Redirect with message (show targets and used counts)
 $message = sprintf(

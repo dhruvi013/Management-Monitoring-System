@@ -61,25 +61,47 @@ $marks_b = min($marks_b, 2);
 $total_marks = min($marks_a + $marks_b, 5);
 
 // Insert into database
-$stmt = $pdo->prepare("INSERT INTO nba_professional_451 (
-    academic_year, no_of_chapters, international_events, national_events,
-    state_events, dept_events, marks_a, marks_b, total_marks
-) VALUES (
-    :year, :chapters, :intl, :national,
-    :state, :dept, :marks_a, :marks_b, :total
-)");
+// Check/Insert/Update
+if (!empty($_POST['id'])) {
+    $stmt = $pdo->prepare("UPDATE nba_professional_451 SET 
+        academic_year=:year, no_of_chapters=:chapters, international_events=:intl,
+        national_events=:national, state_events=:state, dept_events=:dept,
+        marks_a=:marks_a, marks_b=:marks_b, total_marks=:total
+        WHERE id=:id");
 
-$stmt->execute([
-    ':year' => $academic_year,
-    ':chapters' => $no_of_chapters,
-    ':intl' => $international_events,
-    ':national' => $national_events,
-    ':state' => $state_events,
-    ':dept' => $dept_events,
-    ':marks_a' => $marks_a,
-    ':marks_b' => $marks_b,
-    ':total' => $total_marks
-]);
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':chapters' => $no_of_chapters,
+        ':intl' => $international_events,
+        ':national' => $national_events,
+        ':state' => $state_events,
+        ':dept' => $dept_events,
+        ':marks_a' => $marks_a,
+        ':marks_b' => $marks_b,
+        ':total' => $total_marks,
+        ':id' => $_POST['id']
+    ]);
+} else {
+    $stmt = $pdo->prepare("INSERT INTO nba_professional_451 (
+        academic_year, no_of_chapters, international_events, national_events,
+        state_events, dept_events, marks_a, marks_b, total_marks
+    ) VALUES (
+        :year, :chapters, :intl, :national,
+        :state, :dept, :marks_a, :marks_b, :total
+    )");
+    
+    $stmt->execute([
+        ':year' => $academic_year,
+        ':chapters' => $no_of_chapters,
+        ':intl' => $international_events,
+        ':national' => $national_events,
+        ':state' => $state_events,
+        ':dept' => $dept_events,
+        ':marks_a' => $marks_a,
+        ':marks_b' => $marks_b,
+        ':total' => $total_marks
+    ]);
+}
 
 // Redirect with success message
 $message = sprintf(
