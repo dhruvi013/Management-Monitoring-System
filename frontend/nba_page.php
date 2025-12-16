@@ -1341,25 +1341,105 @@ $title = $sub ?: $criteria;
   <?php } ?>
 
   <!-- 5.2 -->
+  <!-- 5.2 -->
   <?php if (strpos($title, "5.2") === 0) { ?>
       <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
           <h2 class="text-xl font-bold mb-4 text-green-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Faculty Cadre Proportion (Professors, Associate Professors, Assistant Professors)</p>
+
           <form method="post" action="../backend/NBA/save_52.php" class="space-y-4">
-              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
-              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
-              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., CAY 2024-25)" class="w-full border p-2 rounded" required>
+              
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <!-- Professors -->
+                  <div class="bg-blue-100 p-3 rounded">
+                      <h3 class="font-semibold text-blue-800 mb-2">Professors (F1)</h3>
+                      <input type="number" name="req_prof" placeholder="Required (RF1)" class="w-full border p-2 rounded mb-2" required min="0">
+                      <input type="number" name="avail_prof" placeholder="Available (AF1)" class="w-full border p-2 rounded" required min="0">
+                  </div>
+                  
+                  <!-- Associate Professors -->
+                  <div class="bg-indigo-100 p-3 rounded">
+                      <h3 class="font-semibold text-indigo-800 mb-2">Associate Prof (F2)</h3>
+                      <input type="number" name="req_assoc" placeholder="Required (RF2)" class="w-full border p-2 rounded mb-2" required min="0">
+                      <input type="number" name="avail_assoc" placeholder="Available (AF2)" class="w-full border p-2 rounded" required min="0">
+                  </div>
+                  
+                  <!-- Assistant Professors -->
+                  <div class="bg-purple-100 p-3 rounded">
+                      <h3 class="font-semibold text-purple-800 mb-2">Assistant Prof (F3)</h3>
+                      <input type="number" name="req_asst" placeholder="Required (RF3)" class="w-full border p-2 rounded mb-2" required min="0">
+                      <input type="number" name="avail_asst" placeholder="Available (AF3)" class="w-full border p-2 rounded" required min="0">
+                  </div>
+              </div>
+
               <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
           </form>
+
+          <!-- Display Marks / Summary -->
+          <div id="marks-display-52" class="mt-6 p-4 bg-white rounded-lg border-2 border-green-300">
+              <h3 class="font-bold text-lg mb-2">Calculated Marks (3 Years Average)</h3>
+              <div id="marks-content-52" class="text-center">
+                  <p class="text-gray-500">Loading...</p>
+              </div>
+          </div>
+
           <div class="mt-8">
               <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
               <div id="table-container-5.2"></div>
           </div>
       </div>
       <script>
+          // Fetch Marks/Summary
+          fetch('../backend/NBA/get_marks.php?criteria=5.2')
+              .then(response => response.json())
+              .then(data => {
+                  const container = document.getElementById('marks-content-52');
+                  if (data.success) {
+                      let historyHTML = '';
+                      if (data.history && data.history.length > 0) {
+                          historyHTML = '<div class="mt-4 overflow-x-auto"><table class="w-full text-sm text-left"><thead><tr class="bg-gray-100"><th>Year</th><th>Prof (Req/Av)</th><th>Assoc (Req/Av)</th><th>Asst (Req/Av)</th></tr></thead><tbody>';
+                          data.history.forEach(h => {
+                             historyHTML += `<tr>
+                                <td class="p-2 border">${h.academic_year}</td>
+                                <td class="p-2 border">${h.req_prof} / ${h.avail_prof}</td>
+                                <td class="p-2 border">${h.req_assoc} / ${h.avail_assoc}</td>
+                                <td class="p-2 border">${h.req_asst} / ${h.avail_asst}</td>
+                             </tr>`; 
+                          });
+                          historyHTML += '</tbody></table></div>';
+                          
+                          // Add Averages row
+                          historyHTML += `<div class="mt-2 text-sm bg-yellow-50 p-2 rounded">
+                            <p class="font-semibold">Averages:</p>
+                            <div class="grid grid-cols-3 gap-2">
+                                <div><span class="font-bold">RF1:</span> ${parseFloat(data.avg_rf1).toFixed(2)} <span class="font-bold">AF1:</span> ${parseFloat(data.avg_af1).toFixed(2)}</div>
+                                <div><span class="font-bold">RF2:</span> ${parseFloat(data.avg_rf2).toFixed(2)} <span class="font-bold">AF2:</span> ${parseFloat(data.avg_af2).toFixed(2)}</div>
+                                <div><span class="font-bold">RF3:</span> ${parseFloat(data.avg_rf3).toFixed(2)} <span class="font-bold">AF3:</span> ${parseFloat(data.avg_af3).toFixed(2)}</div>
+                            </div>
+                            <div class="mt-2">
+                                <p><span class="font-bold">Cadre Ratio Marks:</span> (${parseFloat(data.r1).toFixed(2)} + ${parseFloat(data.r2).toFixed(2)}*0.6 + ${parseFloat(data.r3).toFixed(2)}*0.4) * 10 = <span class="text-xl font-bold text-green-600">${parseFloat(data.cadre_marks).toFixed(2)}</span></p>
+                            </div>
+                          </div>`;
+                      }
+
+                      container.innerHTML = `
+                          ${historyHTML}
+                      `;
+                  } else {
+                      container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
+                  }
+              })
+              .catch(e => console.error(e));
+
           loadTable('5.2', 'table-container-5.2', [
               { key: 'academic_year', label: 'Year' },
-              { key: 'details', label: 'Details' },
-              { key: 'value', label: 'Value' }
+              { key: 'req_prof', label: 'Req Prof' },
+              { key: 'avail_prof', label: 'Avail Prof' },
+              { key: 'req_assoc', label: 'Req Assoc' },
+              { key: 'avail_assoc', label: 'Avail Assoc' },
+              { key: 'req_asst', label: 'Req Asst' },
+              { key: 'avail_asst', label: 'Avail Asst' }
           ]);
       </script>
   <?php } ?>

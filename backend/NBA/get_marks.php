@@ -191,6 +191,31 @@ try {
             $response = ['success' => false, 'message' => 'No data found'];
         }
     }
+    elseif ($criteria === '5.2') {
+        $stmt = $pdo->query("SELECT * FROM nba_criterion_52 ORDER BY academic_year DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            // Get last 3 years for display history ONLY
+            $stmt = $pdo->query("SELECT * FROM nba_criterion_52 ORDER BY academic_year DESC LIMIT 3");
+            $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Use STORED calculations from the latest record
+            // This ensures consistency with what was saved
+            
+            $response = [
+                'success' => true,
+                'cadre_marks' => $data['marks'],
+                'avg_rf1' => $data['avg_rf1'], 'avg_af1' => $data['avg_af1'], 'r1' => $data['ratio1'],
+                'avg_rf2' => $data['avg_rf2'], 'avg_af2' => $data['avg_af2'], 'r2' => $data['ratio2'],
+                'avg_rf3' => $data['avg_rf3'], 'avg_af3' => $data['avg_af3'], 'r3' => $data['ratio3'],
+                'history' => $history,
+                'academic_year' => $data['academic_year']
+            ];
+        } else {
+             $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }

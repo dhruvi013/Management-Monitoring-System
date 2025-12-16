@@ -139,3 +139,26 @@ CREATE TABLE nba_criterion_51 (
   avg_sfr FLOAT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 5.2 Faculty Cadre Proportion
+CREATE TABLE nba_criterion_52 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  req_prof INT NOT NULL,
+  avail_prof INT NOT NULL,
+  req_assoc INT NOT NULL,
+  avail_assoc INT NOT NULL,
+  req_asst INT NOT NULL,
+  avail_asst INT NOT NULL,
+  avg_rf1 FLOAT DEFAULT 0,
+  avg_af1 FLOAT DEFAULT 0,
+  ratio1 FLOAT DEFAULT 0,
+  avg_rf2 FLOAT DEFAULT 0,
+  avg_af2 FLOAT DEFAULT 0,
+  ratio2 FLOAT DEFAULT 0,
+  avg_rf3 FLOAT DEFAULT 0,
+  avg_af3 FLOAT DEFAULT 0,
+  ratio3 FLOAT DEFAULT 0,
+  marks FLOAT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
