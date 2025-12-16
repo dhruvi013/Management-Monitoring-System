@@ -128,3 +128,14 @@ CREATE TABLE nba_participation_453 (
   marks DECIMAL(5,2) NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 5.1 Student-Faculty Ratio (SFR)
+CREATE TABLE nba_criterion_51 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  num_students INT NOT NULL,
+  num_faculty INT NOT NULL,
+  sfr FLOAT NOT NULL,
+  avg_sfr FLOAT DEFAULT 0,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

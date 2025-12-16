@@ -317,8 +317,8 @@ $criteria = [
     ],
 
     "5 - Faculty Information" => [
-        "5.1 - Student-Faculty Ratio (SFR) (20",
-        "5.2 - Faculty Cadre proportion (20",
+        "5.1 - Student-Faculty Ratio (SFR) (20)",
+        "5.2 - Faculty Cadre proportion (20)",
         "5.3 - Faculty Qualification (20)",
         "5.4 - Faculty Retention (10)",
         "5.5 - Faculty Competency in correlation to program specific criteria (10)",

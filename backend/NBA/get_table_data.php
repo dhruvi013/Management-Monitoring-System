@@ -40,6 +40,10 @@ try {
         $stmt = $pdo->query("SELECT * FROM nba_participation_453 ORDER BY academic_year DESC");
         $response = ['success' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
     }
+    elseif ($criteria === '5.1') {
+        $stmt = $pdo->query("SELECT * FROM nba_criterion_51 ORDER BY academic_year DESC");
+        $response = ['success' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }

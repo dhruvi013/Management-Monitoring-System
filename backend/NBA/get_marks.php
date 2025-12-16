@@ -161,6 +161,36 @@ try {
             $response = ['success' => false, 'message' => 'No data found'];
         }
     }
+    elseif ($criteria === '5.1') {
+        // Get latest 5.1 data
+        $stmt = $pdo->query("SELECT * FROM nba_criterion_51 ORDER BY academic_year DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            // Get last 3 years for history
+            $stmt = $pdo->query("SELECT academic_year, num_students, num_faculty, sfr FROM nba_criterion_51 ORDER BY academic_year DESC LIMIT 3");
+            $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Calculate Average SFR
+            $avg_sfr = 0;
+            $sfrs = array_column($history, 'sfr');
+            if (count($sfrs) > 0) {
+                 $avg_sfr = array_sum($sfrs) / count($sfrs);
+            }
+            
+            $response = [
+                'success' => true,
+                'sfr' => $data['sfr'],
+                'avg_sfr' => $avg_sfr,
+                'num_students' => $data['num_students'],
+                'num_faculty' => $data['num_faculty'],
+                'academic_year' => $data['academic_year'],
+                'history' => $history
+            ];
+        } else {
+            $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }
