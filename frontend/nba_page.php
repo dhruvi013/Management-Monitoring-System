@@ -204,7 +204,45 @@ $title = $sub ?: $criteria;
             idInput.value = row.id;
         }
         // Criterion 5 Handlers
-        else if (['5.2', '5.3', '5.4', '5.5', '5.6', '5.7'].includes(criteria)) {
+        // Criterion 5.2 Handler
+        else if (criteria === '5.2') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_52.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="req_prof"]').value = row.req_prof;
+            targetForm.querySelector('[name="avail_prof"]').value = row.avail_prof;
+            targetForm.querySelector('[name="req_assoc"]').value = row.req_assoc;
+            targetForm.querySelector('[name="avail_assoc"]').value = row.avail_assoc;
+            targetForm.querySelector('[name="req_asst"]').value = row.req_asst;
+            targetForm.querySelector('[name="avail_asst"]').value = row.avail_asst;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        // Criterion 5.3 Handler
+        else if (criteria === '5.3') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_53.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="x_phd"]').value = row.x_phd;
+            targetForm.querySelector('[name="y_mtech"]').value = row.y_mtech;
+            targetForm.querySelector('[name="f_required"]').value = row.f_required;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        // Criterion 5.4 - 5.7 Handlers (Generic)
+        else if (['5.4', '5.5', '5.6', '5.7'].includes(criteria)) {
             const cleanCrit = criteria.replace('.', ''); 
             targetForm = document.querySelector(`form[action="../backend/NBA/save_${cleanCrit}.php"]`);
             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
@@ -1445,25 +1483,82 @@ $title = $sub ?: $criteria;
   <?php } ?>
 
   <!-- 5.3 -->
+  <!-- 5.3 -->
   <?php if (strpos($title, "5.3") === 0) { ?>
-      <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">
-          <h2 class="text-xl font-bold mb-4 text-purple-800"><?= h($title) ?></h2>
+      <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-green-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Faculty Qualification (FQ = 2.0 x [(10X + 4Y)/F])</p>
+
           <form method="post" action="../backend/NBA/save_53.php" class="space-y-4">
-              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
-              <input type="text" name="details" placeholder="Details" class="w-full border p-2 rounded">
-              <input type="number" name="value" placeholder="Value/Count" class="w-full border p-2 rounded">
-              <button class="bg-purple-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+              <input type="text" name="academic_year" placeholder="Academic Year (e.g., CAY 2024-25)" class="w-full border p-2 rounded" required>
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                      <label class="block text-sm font-semibold mb-1">Faculty with Ph.D (X)</label>
+                      <input type="number" name="x_phd" placeholder="X" class="w-full border p-2 rounded" required min="0">
+                  </div>
+                  <div>
+                      <label class="block text-sm font-semibold mb-1">Faculty with M.Tech (Y)</label>
+                      <input type="number" name="y_mtech" placeholder="Y" class="w-full border p-2 rounded" required min="0">
+                  </div>
+                  <div>
+                      <label class="block text-sm font-semibold mb-1">Required Faculty (F)</label>
+                      <input type="number" name="f_required" placeholder="F" class="w-full border p-2 rounded" required min="1">
+                  </div>
+              </div>
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
           </form>
+
+          <!-- Marks -->
+          <div id="marks-display-53" class="mt-6 p-4 bg-white rounded-lg border-2 border-green-300">
+               <h3 class="font-bold text-lg mb-2 text-center">Average Assessment (3 Years)</h3>
+               <div id="marks-content-53" class="text-center">
+                   <p class="text-gray-500">Loading...</p>
+               </div>
+          </div>
+
           <div class="mt-8">
               <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
               <div id="table-container-5.3"></div>
           </div>
       </div>
       <script>
+          fetch('../backend/NBA/get_marks.php?criteria=5.3')
+            .then(res => res.json())
+            .then(data => {
+                const container = document.getElementById('marks-content-53');
+                if (data.success) {
+                    let historyHTML = '';
+                    if (data.history && data.history.length > 0) {
+                         historyHTML = '<div class="mt-4 overflow-x-auto"><table class="w-full text-sm text-center border"><thead><tr class="bg-gray-100"><th>Year</th><th>X</th><th>Y</th><th>F</th><th>FQ = 2.0*[(10X+4Y)/F]</th></tr></thead><tbody>';
+                         data.history.forEach(h => {
+                             historyHTML += `<tr>
+                                <td class="p-2 border">${h.academic_year}</td>
+                                <td class="p-2 border">${h.x_phd}</td>
+                                <td class="p-2 border">${h.y_mtech}</td>
+                                <td class="p-2 border">${h.f_required}</td>
+                                <td class="p-2 border font-bold">${parseFloat(h.fq_score).toFixed(2)}</td>
+                             </tr>`;
+                         });
+                         historyHTML += '</tbody></table></div>';
+                    }
+                    
+                    container.innerHTML = `
+                         ${historyHTML}
+                         <div class="mt-4 p-2 bg-yellow-50 rounded">
+                             <p class="text-lg font-bold text-green-700">Average FQ Score: ${parseFloat(data.avg_assessment).toFixed(2)}</p>
+                         </div>
+                    `;
+                } else {
+                    container.innerHTML = '<p class="text-gray-500">No data available yet.</p>';
+                }
+            });
+
           loadTable('5.3', 'table-container-5.3', [
               { key: 'academic_year', label: 'Year' },
-              { key: 'details', label: 'Details' },
-              { key: 'value', label: 'Value' }
+              { key: 'x_phd', label: 'X (Ph.D)' },
+              { key: 'y_mtech', label: 'Y (M.Tech)' },
+              { key: 'f_required', label: 'F (Regular)' },
+              { key: 'fq_score', label: 'FQ Score' }
           ]);
       </script>
   <?php } ?>

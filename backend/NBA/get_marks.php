@@ -216,6 +216,32 @@ try {
              $response = ['success' => false, 'message' => 'No data found'];
         }
     }
+    elseif ($criteria === '5.3') {
+        $stmt = $pdo->query("SELECT * FROM nba_criterion_53 ORDER BY academic_year DESC LIMIT 1");
+        $data = $stmt->fetch();
+        
+        if ($data) {
+            // Get last 3 years
+            $stmt = $pdo->query("SELECT * FROM nba_criterion_53 ORDER BY academic_year DESC LIMIT 3");
+            $history = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            $avg_assessment = 0;
+            $fq_scores = array_column($history, 'fq_score');
+            if (count($fq_scores) > 0) {
+                 $avg_assessment = array_sum($fq_scores) / count($fq_scores);
+            }
+            
+            $response = [
+                'success' => true,
+                'avg_assessment' => $avg_assessment,
+                'latest_fq' => $data['fq_score'],
+                'history' => $history,
+                'academic_year' => $data['academic_year']
+            ];
+        } else {
+             $response = ['success' => false, 'message' => 'No data found'];
+        }
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }

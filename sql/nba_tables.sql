@@ -162,3 +162,14 @@ CREATE TABLE nba_criterion_52 (
   marks FLOAT DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 5.3 Faculty Qualification
+CREATE TABLE nba_criterion_53 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  x_phd INT NOT NULL,
+  y_mtech INT NOT NULL,
+  f_required INT NOT NULL,
+  fq_score FLOAT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
