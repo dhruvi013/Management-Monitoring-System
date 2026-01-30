@@ -337,6 +337,7 @@ $criteria = [
         "6.1 - Labs",
         "6.2 - Classrooms",
         "6.3 - Library",
+        "6.4 - Internet & Wi-Fi Facilities (10)",
     ],
 
     "7 - Continuous Improvement" => [
