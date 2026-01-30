@@ -258,8 +258,8 @@ $title = $sub ?: $criteria;
             }
             idInput.value = row.id;
         }
-        // Criterion 6.1 - 6.4 Handlers (Generic)
-        else if (['6.1', '6.2', '6.3', '6.4'].includes(criteria)) {
+        // Criterion 6.1 - 6.4 and 7.1 - 7.4 Handlers (Generic)
+        else if (['6.1', '6.2', '6.3', '6.4', '7.1', '7.2', '7.3', '7.4'].includes(criteria)) {
             const cleanCrit = criteria.replace('.', ''); 
             targetForm = document.querySelector(`form[action="../backend/NBA/save_${cleanCrit}.php"]`);
             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
@@ -1887,6 +1887,106 @@ $title = $sub ?: $criteria;
       </div>
       <script>
           loadTable('6.4', 'table-container-6.4', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'marks', label: 'Marks' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- ************************************
+       Criterion 7 - Continuous Improvement
+  ************************************* -->
+
+  <!-- 7.1 -->
+  <?php if (strpos($title, "7.1") === 0) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_71.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="details" placeholder="Enter details regarding POs and PSOs assessment actions" class="w-full border p-2 rounded h-32"></textarea>
+              <input type="number" step="0.01" name="marks" placeholder="Marks claimed (Max 30)" class="w-full border p-2 rounded">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-7.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('7.1', 'table-container-7.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'marks', label: 'Marks' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 7.2 -->
+  <?php if (strpos($title, "7.2") === 0) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_72.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="details" placeholder="Enter details regarding Academic Audit actions" class="w-full border p-2 rounded h-32"></textarea>
+              <input type="number" step="0.01" name="marks" placeholder="Marks claimed (Max 15)" class="w-full border p-2 rounded">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-7.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('7.2', 'table-container-7.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'marks', label: 'Marks' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 7.3 -->
+  <?php if (strpos($title, "7.3") === 0) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_73.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="details" placeholder="Enter details regarding Improvement in placement, Higher Studies and Entrepreneurship" class="w-full border p-2 rounded h-32"></textarea>
+              <input type="number" step="0.01" name="marks" placeholder="Marks claimed (Max 10)" class="w-full border p-2 rounded">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-7.3"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('7.3', 'table-container-7.3', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'details', label: 'Details' },
+              { key: 'marks', label: 'Marks' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 7.4 -->
+  <?php if (strpos($title, "7.4") === 0) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <form method="post" action="../backend/NBA/save_74.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="details" placeholder="Enter details regarding Improvement in quality of students admitted" class="w-full border p-2 rounded h-32"></textarea>
+              <input type="number" step="0.01" name="marks" placeholder="Marks claimed (Max 20)" class="w-full border p-2 rounded">
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-7.4"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('7.4', 'table-container-7.4', [
               { key: 'academic_year', label: 'Year' },
               { key: 'details', label: 'Details' },
               { key: 'marks', label: 'Marks' }

@@ -333,16 +333,18 @@ $criteria = [
         "5.10 - Visiting/ Adjunct/ Emeritus Faculty etc. (10)" ,
     ],
 
-    "6 - Infrastructure & Facilities" => [
-        "6.1 - Labs",
-        "6.2 - Classrooms",
-        "6.3 - Library",
-        "6.4 - Internet & Wi-Fi Facilities (10)",
+    "6 - Facilities and Technical Support" => [
+        "6.1 - Adequate and well equipped laboratories, and technical manpower (40)",
+        "6.2 - Laboratories: Maintenance and overall ambience (10)",
+        "6.3 - Safety measures in laboratories (10)",
+        "6.4 - Project laboratory/Facilities (20)",
     ],
 
     "7 - Continuous Improvement" => [
-        "7.1 - Previous Year Improvements",
-        "7.2 - Achieved Outcomes",
+        "7.1 - POs and PSOs Assessment (30)",
+        "7.2 - Academic Audit and Improvements (15)",
+        "7.3 - Placement, Higher Studies and Entrepreneurship (10)",
+        "7.4 - Quality of Admitted Students (20)",
     ]
 ];
 ?>
