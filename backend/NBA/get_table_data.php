@@ -52,6 +52,11 @@ try {
         $stmt = $pdo->query("SELECT * FROM nba_criterion_53 ORDER BY academic_year DESC");
         $response = ['success' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
     }
+    elseif (in_array($criteria, ['6.1', '6.2', '6.3', '6.4'])) {
+        $table = 'nba_criterion_' . str_replace('.', '', $criteria);
+        $stmt = $pdo->query("SELECT * FROM $table ORDER BY academic_year DESC");
+        $response = ['success' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+    }
     else {
         $response = ['success' => false, 'message' => 'Invalid criteria'];
     }

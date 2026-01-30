@@ -173,3 +173,39 @@ CREATE TABLE nba_criterion_53 (
   fq_score FLOAT NOT NULL,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- 6.1 Adequate and well equipped laboratories, and technical manpower (40)
+CREATE TABLE nba_criterion_61 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  details TEXT NOT NULL,
+  marks FLOAT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6.2 Laboratories: Maintenance and overall ambience (10)
+CREATE TABLE nba_criterion_62 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  details TEXT NOT NULL,
+  marks FLOAT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6.3 Safety measures in laboratories (10)
+CREATE TABLE nba_criterion_63 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  details TEXT NOT NULL,
+  marks FLOAT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- 6.4 Project laboratory/Facultities (20)
+CREATE TABLE nba_criterion_64 (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  academic_year VARCHAR(50) NOT NULL,
+  details TEXT NOT NULL,
+  marks FLOAT NOT NULL,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
