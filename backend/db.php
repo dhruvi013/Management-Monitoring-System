@@ -1,17 +1,15 @@
 <?php
 // backend/db.php
 // Database connection using PDO
+// Detect environment (Vercel or Local)
+$DB_HOST = getenv('DB_HOST') ?: 'localhost';
+$DB_NAME = getenv('DB_NAME') ?: 'department_monitoring';
+$DB_USER = getenv('DB_USER') ?: 'root';
+$DB_PASS = getenv('DB_PASS') ?: '';
 
-$DB_HOST = 'localhost';
-$DB_NAME = 'department_monitoring'; // change if you used different DB name
-$DB_USER = 'root';                  // change as per your MySQL user
-$DB_PASS = '';                      // change as needed
-
-
-// $host = "localhost";
-// $user = "ictmu6ya_deprtmentmonitoringsystem";
-// $pass = "ictmu6ya_deprtmentmonitoringsystem";
-// $dbname = "ictmu6ya_deprtmentmonitoringsystem";
+// On Vercel (or other clouds), sometimes the port is separate or SSL is needed.
+// For example, Aiven or PlanetScale might require SSL.
+// But for basic usage, the above environment variables are the standard starting point.
 
 // $conn = new mysqli($host, $user, $pass, $dbname);
 
