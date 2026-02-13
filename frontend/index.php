@@ -316,6 +316,17 @@ $criteria = [
         "1.4 - State the process for defining the Vision and Mission of the Department, and PEOs of the program (15)",
         "1.5 - Establish consistency of PEOs with Mission of the Department (10)"
     ],
+    "2 - Program Curriculum and Teaching-Learning Processes" => [
+        "2.1.1 - State the process for designing the program curriculum (10)",
+        "2.1.2 - Structure of the Curriculum (5)",
+        "2.1.3 - State the components of the curriculum (5)",
+        "2.1.4 - State the process used to identify extent of compliance of the curriculum for attaining POs & PSOs (10)",
+        "2.2.1 - Describe the Process followed to improve quality of Teaching Learning (15)",
+        "2.2.2 - Quality of end semester examination, internal semester question papers, assignments and evaluation (15)",
+        "2.2.3 - Quality of student projects (20)",
+        "2.2.4 - Initiatives related to industry interaction (10)",
+        "2.2.5 - Initiatives related to industry internship/summer training (10)"
+    ],
     "3 - Course Outcomes (CO) & PO Mapping" => [
         "3.1 - CO Attainment",
         "3.2 - PO Mapping",

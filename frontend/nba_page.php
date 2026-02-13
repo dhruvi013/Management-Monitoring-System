@@ -284,6 +284,35 @@ $title = $sub ?: $criteria;
             }
             idInput.value = row.id;
         }
+
+        // Criterion 2 Handlers
+        else if (['2.1.1', '2.1.2', '2.1.3', '2.1.4', '2.2.1', '2.2.2', '2.2.3', '2.2.4', '2.2.5'].includes(criteria)) {
+            // Determine action script based on criteria
+            let actionScript = '';
+            if (criteria === '2.1.1') actionScript = '../backend/NBA/save_211.php';
+            else if (criteria === '2.1.2') actionScript = '../backend/NBA/save_212.php';
+            else if (criteria === '2.1.3') actionScript = '../backend/NBA/save_213.php';
+            else if (criteria === '2.1.4') actionScript = '../backend/NBA/save_214.php';
+            else if (criteria === '2.2.1') actionScript = '../backend/NBA/save_221.php';
+            else if (criteria === '2.2.2') actionScript = '../backend/NBA/save_222.php';
+            else if (criteria === '2.2.3') actionScript = '../backend/NBA/save_223.php';
+            else if (criteria === '2.2.4') actionScript = '../backend/NBA/save_224.php';
+            else if (criteria === '2.2.5') actionScript = '../backend/NBA/save_225.php';
+
+            targetForm = document.querySelector(`form[action="${actionScript}"]`);
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="description"]').value = row.description;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+
         // Criterion 5 Handlers
         // Criterion 5.2 Handler
         else if (criteria === '5.2') {
@@ -633,6 +662,46 @@ $title = $sub ?: $criteria;
           ]);
       </script>
   <?php } ?>
+
+  <!-- CRITERION 2 FORMS (2.1.1 - 2.2.5) -->
+  <?php 
+  $c2_forms = [
+      '2.1.1' => ['title' => '2.1.1 - Process for Designing Curriculum', 'action' => '../backend/NBA/save_211.php', 'desc_placeholder' => 'Describe the process...'],
+      '2.1.2' => ['title' => '2.1.2 - Structure of the Curriculum', 'action' => '../backend/NBA/save_212.php', 'desc_placeholder' => 'Describe the structure...'],
+      '2.1.3' => ['title' => '2.1.3 - Components of the Curriculum', 'action' => '../backend/NBA/save_213.php', 'desc_placeholder' => 'List the components...'],
+      '2.1.4' => ['title' => '2.1.4 - Process of Compliance', 'action' => '../backend/NBA/save_214.php', 'desc_placeholder' => 'Describe the compliance process...'],
+      '2.2.1' => ['title' => '2.2.1 - Teaching Learning Process', 'action' => '../backend/NBA/save_221.php', 'desc_placeholder' => 'Describe the teaching learning process...'],
+      '2.2.2' => ['title' => '2.2.2 - Quality of Exams/Assignments', 'action' => '../backend/NBA/save_222.php', 'desc_placeholder' => 'Describe quality assurance...'],
+      '2.2.3' => ['title' => '2.2.3 - Student Projects', 'action' => '../backend/NBA/save_223.php', 'desc_placeholder' => 'Describe project allocation and evaluation...'],
+      '2.2.4' => ['title' => '2.2.4 - Industry Interaction', 'action' => '../backend/NBA/save_224.php', 'desc_placeholder' => 'Describe industry initiatives...'],
+      '2.2.5' => ['title' => '2.2.5 - Internships/Training', 'action' => '../backend/NBA/save_225.php', 'desc_placeholder' => 'Describe internship initiatives...']
+  ];
+
+  foreach ($c2_forms as $key => $form) {
+      if (strpos($title, $key) !== false) { 
+  ?>
+      <div class="p-6 border-l-4 border-teal-500 bg-teal-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-teal-800"><?= $form['title'] ?></h2>
+          <form method="post" action="<?= $form['action'] ?>" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="description" placeholder="<?= $form['desc_placeholder'] ?>" class="w-full border p-2 rounded h-40" required></textarea>
+              <button class="bg-teal-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-<?= $key ?>"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('<?= $key ?>', 'table-container-<?= $key ?>', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'description', label: 'Description' }
+          ]);
+      </script>
+  <?php 
+      }
+  } 
+  ?>
 
   <?php if ($title === "4.1 - Enrollment Ratio (20)") { ?>
       <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
