@@ -1,5 +1,11 @@
 <?php
 // frontend/index.php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 require_once __DIR__ . '/../backend/db.php';
 require_once __DIR__ . '/../backend/helpers.php';
 
@@ -61,9 +67,15 @@ $type = $_GET['type'] ?? '';
 <body class="bg-gray-100 p-6">
 <div class="max-w-7xl mx-auto">
 
-  <header class="mb-6">
-    <h1 class="text-3xl font-bold">Department Monitoring System</h1>
-    <p class="text-sm text-gray-600">Manage Students & Faculty</p>
+  <header class="mb-6 flex justify-between items-center">
+    <div>
+        <h1 class="text-3xl font-bold">Department Monitoring System</h1>
+        <p class="text-sm text-gray-600">Manage Students & Faculty</p>
+    </div>
+    <div class="flex items-center gap-4">
+        <span class="text-gray-700">Welcome, <?= htmlspecialchars($_SESSION['email']) ?></span>
+        <a href="../backend/auth_logout.php" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Logout</a>
+    </div>
   </header>
 
   <!-- TABS -->
@@ -297,7 +309,18 @@ $type = $_GET['type'] ?? '';
 
 <?php
 $criteria = [
-"4 - Student Performance" => [
+    "1 - Vision, Mission and Program Educational Objectives" => [
+        "1.1 - State the Vision and Mission of the Department and Institute (5)",
+        "1.2 - State the Program Educational Objectives (PEOs) (5)",
+        "1.3 - Indicate where and how the Vision, Mission and PEOs are published and disseminated (15)",
+        "1.4 - State the process for defining the Vision and Mission of the Department, and PEOs of the program (15)",
+        "1.5 - Establish consistency of PEOs with Mission of the Department (10)"
+    ],
+    "3 - Course Outcomes (CO) & PO Mapping" => [
+        "3.1 - CO Attainment",
+        "3.2 - PO Mapping",
+    ],
+    "4 - Student Performance" => [
         "4.1 - Enrollment Ratio (20)",
         "4.2 - Success Rate in the Stipulated Period of Program (20)",
         "4.3 - Academic Performance in Second Year (10)",

@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 require_once __DIR__ . '/../backend/helpers.php';
 
 $criteria = $_GET['criteria'] ?? null;
@@ -194,6 +200,81 @@ $title = $sub ?: $criteria;
             targetForm.querySelector('[name="num_faculty"]').value = row.num_faculty;
             targetForm.querySelector('[name="num_faculty"]').dispatchEvent(new Event('input'));
 
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        
+        // Criterion 1 Handlers
+        else if (criteria === '1.1') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_11.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="vision"]').value = row.vision;
+            targetForm.querySelector('[name="mission"]').value = row.mission;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '1.2') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_12.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="peo_title"]').value = row.peo_title;
+            targetForm.querySelector('[name="peo_statement"]').value = row.peo_statement;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '1.3') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_13.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="process"]').value = row.process;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '1.4') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_14.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="process"]').value = row.process;
+            
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '1.5') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_15.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="peo_mission_matrix"]').value = row.peo_mission_matrix;
+            targetForm.querySelector('[name="justification"]').value = row.justification;
+            
             let idInput = targetForm.querySelector('[name="id"]');
             if(!idInput) {
                 idInput = document.createElement('input');
@@ -440,6 +521,118 @@ $title = $sub ?: $criteria;
   <!-- ************************************
        MAIN CRITERIA FORMS
   ************************************* -->
+
+  <!-- CRITERION 1 FORMS -->
+  <?php if (strpos($title, '1.1') !== false) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800">1.1 - Vision and Mission</h2>
+          <form method="post" action="../backend/NBA/save_11.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="vision" placeholder="Vision Statement" class="w-full border p-2 rounded h-32" required></textarea>
+              <textarea name="mission" placeholder="Mission Statement" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-1.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('1.1', 'table-container-1.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'vision', label: 'Vision' },
+              { key: 'mission', label: 'Mission' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '1.2') !== false) { ?>
+      <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-green-800">1.2 - Program Educational Objectives (PEOs)</h2>
+          <form method="post" action="../backend/NBA/save_12.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="peo_title" placeholder="PEO Title (e.g., PEO1)" class="w-full border p-2 rounded" required>
+              <textarea name="peo_statement" placeholder="PEO Statement" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-1.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('1.2', 'table-container-1.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'peo_title', label: 'Title' },
+              { key: 'peo_statement', label: 'Statement' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '1.3') !== false) { ?>
+      <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-indigo-800">1.3 - Dissemination of Vision, Mission & PEOs</h2>
+          <form method="post" action="../backend/NBA/save_13.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="process" placeholder="Describe the dissemination process..." class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-1.3"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('1.3', 'table-container-1.3', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'process', label: 'Process Details' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '1.4') !== false) { ?>
+      <div class="p-6 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-yellow-800">1.4 - Process for Defining Vision, Mission & PEOs</h2>
+          <form method="post" action="../backend/NBA/save_14.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="process" placeholder="Describe the definition process..." class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-1.4"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('1.4', 'table-container-1.4', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'process', label: 'Process Details' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '1.5') !== false) { ?>
+      <div class="p-6 border-l-4 border-red-500 bg-red-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-red-800">1.5 - Consistency of PEOs with Mission</h2>
+          <form method="post" action="../backend/NBA/save_15.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="peo_mission_matrix" placeholder="PEO-Mission Matrix (or description)" class="w-full border p-2 rounded h-32" required></textarea>
+              <textarea name="justification" placeholder="Consistency Justification" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-red-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-1.5"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('1.5', 'table-container-1.5', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'peo_mission_matrix', label: 'Matrix' },
+              { key: 'justification', label: 'Justification' }
+          ]);
+      </script>
+  <?php } ?>
 
   <?php if ($title === "4.1 - Enrollment Ratio (20)") { ?>
       <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
