@@ -313,6 +313,97 @@ $title = $sub ?: $criteria;
             idInput.value = row.id;
         }
 
+        // Criterion 3 Handlers
+        else if (criteria === '3.1') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_31.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="semester"]').value = row.semester;
+            targetForm.querySelector('[name="subject_code"]').value = row.subject_code;
+            targetForm.querySelector('[name="course_name"]').value = row.course_name;
+            targetForm.querySelector('[name="cos_defined"]').value = row.cos_defined;
+            targetForm.querySelector('[name="cos_embedded"]').value = row.cos_embedded;
+            targetForm.querySelector('[name="articulation_matrix_co"]').value = row.articulation_matrix_co;
+            targetForm.querySelector('[name="articulation_matrix_po"]').value = row.articulation_matrix_po;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '3.2.1') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_321.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="semester"]').value = row.semester;
+            targetForm.querySelector('[name="assessment_tools"]').value = row.assessment_tools;
+            targetForm.querySelector('[name="quality_relevance"]').value = row.quality_relevance;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '3.2.2') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_322.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="semester"]').value = row.semester;
+            targetForm.querySelector('[name="subject_code"]').value = row.subject_code;
+            targetForm.querySelector('[name="course_name"]').value = row.course_name;
+            targetForm.querySelector('[name="attainment_level"]').value = row.attainment_level;
+            targetForm.querySelector('[name="target_level"]').value = row.target_level;
+            targetForm.querySelector('[name="observations"]').value = row.observations;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '3.3.1') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_331.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="semester"]').value = row.semester;
+            targetForm.querySelector('[name="assessment_tools"]').value = row.assessment_tools;
+            targetForm.querySelector('[name="quality_relevance"]').value = row.quality_relevance;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '3.3.2') {
+            targetForm = document.querySelector('form[action="../backend/NBA/save_332.php"]');
+            targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+            targetForm.querySelector('[name="semester"]').value = row.semester;
+            targetForm.querySelector('[name="po_pso_name"]').value = row.po_pso_name;
+            targetForm.querySelector('[name="target_level"]').value = row.target_level;
+            targetForm.querySelector('[name="attainment_level"]').value = row.attainment_level;
+            targetForm.querySelector('[name="observations"]').value = row.observations;
+
+            let idInput = targetForm.querySelector('[name="id"]');
+            if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+
         // Criterion 5 Handlers
         // Criterion 5.2 Handler
         else if (criteria === '5.2') {
@@ -435,6 +526,117 @@ $title = $sub ?: $criteria;
              targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
              targetForm.querySelector('[name="topic"]').value = row.topic;
              targetForm.querySelector('[name="publication"]').value = row.publication;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        
+        // Criterion 8 Handlers
+        else if (criteria === '8.1') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_81.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="regular_faculty"]').value = row.regular_faculty;
+             targetForm.querySelector('[name="contract_faculty"]').value = row.contract_faculty;
+             targetForm.querySelector('[name="student_count"]').value = row.student_count;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '8.2') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_82.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="x_phd"]').value = row.x_phd;
+             targetForm.querySelector('[name="y_mtech"]').value = row.y_mtech;
+             targetForm.querySelector('[name="rf_required"]').value = row.rf_required;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '8.3') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_83.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="mean_performance"]').value = row.mean_gpa_or_percentage;
+             targetForm.querySelector('[name="students_appeared"]').value = row.students_appeared;
+             targetForm.querySelector('[name="students_successful"]').value = row.students_successful;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '8.4.1') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_841.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="description"]').value = row.description;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '8.4.2') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_842.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="course_name"]').value = row.course_name;
+             targetForm.querySelector('[name="attainment_level"]').value = row.attainment_level;
+             targetForm.querySelector('[name="target_level"]').value = row.target_level;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '8.5.1') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_851.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="po_pso_name"]').value = row.po_pso_name;
+             targetForm.querySelector('[name="attainment_level"]').value = row.attainment_level;
+             targetForm.querySelector('[name="target_level"]').value = row.target_level;
+             
+             let idInput = targetForm.querySelector('[name="id"]');
+             if(!idInput) {
+                idInput = document.createElement('input');
+                idInput.type = 'hidden';
+                idInput.name = 'id';
+                targetForm.appendChild(idInput);
+            }
+            idInput.value = row.id;
+        }
+        else if (criteria === '8.5.2') {
+             targetForm = document.querySelector('form[action="../backend/NBA/save_852.php"]');
+             targetForm.querySelector('[name="academic_year"]').value = row.academic_year;
+             targetForm.querySelector('[name="po_pso_name"]').value = row.po_pso_name;
+             targetForm.querySelector('[name="action_taken"]').value = row.action_taken;
              
              let idInput = targetForm.querySelector('[name="id"]');
              if(!idInput) {
@@ -702,6 +904,150 @@ $title = $sub ?: $criteria;
       }
   } 
   ?>
+
+  <!-- CRITERION 3 FORMS -->
+  <?php if (strpos($title, '3.1') !== false) { ?>
+      <div class="p-6 border-l-4 border-purple-500 bg-purple-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-purple-800">3.1 - Establish the correlation between the courses and the POs & PSOs</h2>
+          <form method="post" action="../backend/NBA/save_31.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="semester" placeholder="Semester (e.g., Odd 2024)" class="w-full border p-2 rounded" required>
+              <input type="text" name="subject_code" placeholder="Subject Code" class="w-full border p-2 rounded" required>
+              <input type="text" name="course_name" placeholder="Course Name" class="w-full border p-2 rounded" required>
+              <textarea name="cos_defined" placeholder="Evidence of COs being defined for every course" class="w-full border p-2 rounded h-24" required></textarea>
+              <textarea name="cos_embedded" placeholder="Availability of COs embedded in the syllabi" class="w-full border p-2 rounded h-24" required></textarea>
+              <textarea name="articulation_matrix_co" placeholder="Explanation of Course Articulation Matrix table" class="w-full border p-2 rounded h-24" required></textarea>
+              <textarea name="articulation_matrix_po" placeholder="Explanation of Program Articulation Matrix tables" class="w-full border p-2 rounded h-24" required></textarea>
+              <button class="bg-purple-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-3.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('3.1', 'table-container-3.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'semester', label: 'Semester' },
+              { key: 'subject_code', label: 'Code' },
+              { key: 'course_name', label: 'Course' },
+              { key: 'cos_defined', label: 'COs Defined' },
+              { key: 'cos_embedded', label: 'COs Embedded' },
+              { key: 'articulation_matrix_co', label: 'Matrix CO' },
+              { key: 'articulation_matrix_po', label: 'Matrix PO' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '3.2.1') !== false) { ?>
+      <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-indigo-800">3.2.1 - Assessment tools and processes (COs)</h2>
+          <form method="post" action="../backend/NBA/save_321.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="semester" placeholder="Semester" class="w-full border p-2 rounded" required>
+              <textarea name="assessment_tools" placeholder="List of assessment processes" class="w-full border p-2 rounded h-32" required></textarea>
+              <textarea name="quality_relevance" placeholder="The quality/relevance of assessment processes & tools used" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-3.2.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('3.2.1', 'table-container-3.2.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'semester', label: 'Semester' },
+              { key: 'assessment_tools', label: 'Assessment Tools' },
+              { key: 'quality_relevance', label: 'Quality & Relevance' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '3.2.2') !== false) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800">3.2.2 - Attainment of Course Outcomes</h2>
+          <form method="post" action="../backend/NBA/save_322.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="semester" placeholder="Semester" class="w-full border p-2 rounded" required>
+              <input type="text" name="subject_code" placeholder="Subject Code" class="w-full border p-2 rounded" required>
+              <input type="text" name="course_name" placeholder="Course Name" class="w-full border p-2 rounded" required>
+              <input type="text" name="target_level" placeholder="Target Level" class="w-full border p-2 rounded" required>
+              <input type="text" name="attainment_level" placeholder="Attainment Level" class="w-full border p-2 rounded" required>
+              <textarea name="observations" placeholder="Observations" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-3.2.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('3.2.2', 'table-container-3.2.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'semester', label: 'Semester' },
+              { key: 'subject_code', label: 'Code' },
+              { key: 'course_name', label: 'Course' },
+              { key: 'target_level', label: 'Target' },
+              { key: 'attainment_level', label: 'Attainment' },
+              { key: 'observations', label: 'Observations' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '3.3.1') !== false) { ?>
+      <div class="p-6 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-yellow-800">3.3.1 - Assessment tools and processes (POs & PSOs)</h2>
+          <form method="post" action="../backend/NBA/save_331.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="semester" placeholder="Semester" class="w-full border p-2 rounded" required>
+              <textarea name="assessment_tools" placeholder="List of assessment tools & processes" class="w-full border p-2 rounded h-32" required></textarea>
+              <textarea name="quality_relevance" placeholder="The quality/relevance of assessment tools/processes used" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-3.3.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('3.3.1', 'table-container-3.3.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'semester', label: 'Semester' },
+              { key: 'assessment_tools', label: 'Assessment Tools' },
+              { key: 'quality_relevance', label: 'Quality & Relevance' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <?php if (strpos($title, '3.3.2') !== false) { ?>
+      <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-green-800">3.3.2 - Provide results of evaluation of each PO & PSO</h2>
+          <form method="post" action="../backend/NBA/save_332.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="semester" placeholder="Semester" class="w-full border p-2 rounded" required>
+              <input type="text" name="po_pso_name" placeholder="PO/PSO Name" class="w-full border p-2 rounded" required>
+              <input type="text" name="target_level" placeholder="Target Level" class="w-full border p-2 rounded" required>
+              <input type="text" name="attainment_level" placeholder="Attainment Level" class="w-full border p-2 rounded" required>
+              <textarea name="observations" placeholder="Observations" class="w-full border p-2 rounded h-32" required></textarea>
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-3.3.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('3.3.2', 'table-container-3.3.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'semester', label: 'Semester' },
+              { key: 'po_pso_name', label: 'PO/PSO' },
+              { key: 'target_level', label: 'Target' },
+              { key: 'attainment_level', label: 'Attainment' },
+              { key: 'observations', label: 'Observations' }
+          ]);
+      </script>
+  <?php } ?>
 
   <?php if ($title === "4.1 - Enrollment Ratio (20)") { ?>
       <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
@@ -2256,6 +2602,199 @@ $title = $sub ?: $criteria;
       </script>
   <?php } ?>
 
+
+  <!-- ************************************
+       Criterion 8 - First Year Academics
+  ************************************* -->
+
+  <!-- 8.1 -->
+  <?php if (strpos($title, "8.1") === 0) { ?>
+      <div class="p-6 border-l-4 border-green-500 bg-green-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-green-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">First Year Student-Faculty Ratio (FYSFR)</p>
+          <form method="post" action="../backend/NBA/save_81.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="number" name="regular_faculty" placeholder="Number of Regular Faculty" class="w-full border p-2 rounded" required>
+              <input type="number" name="contract_faculty" placeholder="Number of Contract Faculty" class="w-full border p-2 rounded" required>
+              <input type="number" name="student_count" placeholder="Number of Students" class="w-full border p-2 rounded" required>
+              <button class="bg-green-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.1', 'table-container-8.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'regular_faculty', label: 'Regular Faculty' },
+              { key: 'contract_faculty', label: 'Contract Faculty' },
+              { key: 'student_count', label: 'Student Count' },
+              { key: 'fysfr', label: 'FYSFR' },
+              { key: 'assessment_score', label: 'Assessment' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 8.2 -->
+  <?php if (strpos($title, "8.2") === 0) { ?>
+      <div class="p-6 border-l-4 border-indigo-500 bg-indigo-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-indigo-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Qualification of Faculty Teaching First Year Common Courses</p>
+          <form method="post" action="../backend/NBA/save_82.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="number" name="x_phd" placeholder="Faculty with Ph.D (x)" class="w-full border p-2 rounded" required>
+              <input type="number" name="y_mtech" placeholder="Faculty with M.Tech/M.Sc/M.Phil (y)" class="w-full border p-2 rounded" required>
+              <input type="number" name="rf_required" placeholder="Required Faculty (RF)" class="w-full border p-2 rounded" required>
+              <button class="bg-indigo-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.2', 'table-container-8.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'x_phd', label: 'Ph.D (x)' },
+              { key: 'y_mtech', label: 'M.Tech (y)' },
+              { key: 'rf_required', label: 'RF' },
+              { key: 'assessment_score', label: 'Assessment' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 8.3 -->
+  <?php if (strpos($title, "8.3") === 0) { ?>
+      <div class="p-6 border-l-4 border-blue-500 bg-blue-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-blue-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">First Year Academic Performance</p>
+          <form method="post" action="../backend/NBA/save_83.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="number" step="0.01" name="mean_performance" placeholder="Mean GPA * 10 OR Mean Percentage" class="w-full border p-2 rounded" required>
+              <input type="number" name="students_appeared" placeholder="Number of Students Appeared" class="w-full border p-2 rounded" required>
+              <input type="number" name="students_successful" placeholder="Number of Successful Students" class="w-full border p-2 rounded" required>
+              <button class="bg-blue-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.3"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.3', 'table-container-8.3', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'mean_gpa_or_percentage', label: 'Mean Perf.' },
+              { key: 'students_appeared', label: 'Appeared' },
+              { key: 'students_successful', label: 'Successful' },
+              { key: 'api_score', label: 'API Score' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 8.4.1 -->
+  <?php if (strpos($title, "8.4.1") === 0) { ?>
+      <div class="p-6 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-yellow-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Description of Assessment Processes</p>
+          <form method="post" action="../backend/NBA/save_841.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <textarea name="description" placeholder="Describe the assessment processes..." class="w-full border p-2 rounded h-32"></textarea>
+              <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.4.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.4.1', 'table-container-8.4.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'description', label: 'Description' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 8.4.2 -->
+  <?php if (strpos($title, "8.4.2") === 0) { ?>
+      <div class="p-6 border-l-4 border-yellow-500 bg-yellow-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-yellow-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Attainment of Course Outcomes</p>
+          <form method="post" action="../backend/NBA/save_842.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="course_name" placeholder="Course Name" class="w-full border p-2 rounded" required>
+              <input type="number" step="0.01" name="attainment_level" placeholder="Attainment Level" class="w-full border p-2 rounded" required>
+              <input type="number" step="0.01" name="target_level" placeholder="Target Level" class="w-full border p-2 rounded" required>
+              <button class="bg-yellow-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.4.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.4.2', 'table-container-8.4.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'course_name', label: 'Course' },
+              { key: 'attainment_level', label: 'Attainment' },
+              { key: 'target_level', label: 'Target' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 8.5.1 -->
+  <?php if (strpos($title, "8.5.1") === 0) { ?>
+      <div class="p-6 border-l-4 border-red-500 bg-red-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-red-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Evaluation of POs/PSOs</p>
+          <form method="post" action="../backend/NBA/save_851.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="po_pso_name" placeholder="PO/PSO Name" class="w-full border p-2 rounded" required>
+              <input type="number" step="0.01" name="attainment_level" placeholder="Attainment Level" class="w-full border p-2 rounded" required>
+              <input type="number" step="0.01" name="target_level" placeholder="Target Level" class="w-full border p-2 rounded" required>
+              <button class="bg-red-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.5.1"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.5.1', 'table-container-8.5.1', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'po_pso_name', label: 'PO/PSO' },
+              { key: 'attainment_level', label: 'Attainment' },
+              { key: 'target_level', label: 'Target' }
+          ]);
+      </script>
+  <?php } ?>
+
+  <!-- 8.5.2 -->
+  <?php if (strpos($title, "8.5.2") === 0) { ?>
+      <div class="p-6 border-l-4 border-red-500 bg-red-50 rounded-lg mb-6">
+          <h2 class="text-xl font-bold mb-4 text-red-800"><?= h($title) ?></h2>
+          <p class="text-sm text-gray-700 mb-4">Actions Taken based on PO/PSO Evaluation</p>
+          <form method="post" action="../backend/NBA/save_852.php" class="space-y-4">
+              <input type="text" name="academic_year" placeholder="Academic Year" class="w-full border p-2 rounded" required>
+              <input type="text" name="po_pso_name" placeholder="PO/PSO Name" class="w-full border p-2 rounded" required>
+              <textarea name="action_taken" placeholder="Actions Taken" class="w-full border p-2 rounded h-32"></textarea>
+              <button class="bg-red-600 text-white px-4 py-2 rounded w-full">Save Data</button>
+          </form>
+          <div class="mt-8">
+              <h3 class="font-bold text-lg text-gray-700">Saved Records</h3>
+              <div id="table-container-8.5.2"></div>
+          </div>
+      </div>
+      <script>
+          loadTable('8.5.2', 'table-container-8.5.2', [
+              { key: 'academic_year', label: 'Year' },
+              { key: 'po_pso_name', label: 'PO/PSO' },
+              { key: 'action_taken', label: 'Action Taken' }
+          ]);
+      </script>
+  <?php } ?>
+
 </div>
 </body>
 </html>
+

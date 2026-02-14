@@ -19,6 +19,21 @@ if (!$id || !$criteria) {
 
 $table = '';
 switch ($criteria) {
+    case '3.1':
+        $table = 'nba_criterion_31';
+        break;
+    case '3.2.1':
+        $table = 'nba_criterion_321';
+        break;
+    case '3.2.2':
+        $table = 'nba_criterion_322';
+        break;
+    case '3.3.1':
+        $table = 'nba_criterion_331';
+        break;
+    case '3.3.2':
+        $table = 'nba_criterion_332';
+        break;
     case '4.1':
         $table = 'nba_enrollment_41';
         break;

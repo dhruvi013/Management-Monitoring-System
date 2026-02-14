@@ -8,7 +8,12 @@ $criteria = $_GET['criteria'] ?? '';
 $response = [];
 
 try {
-    if ($criteria === '4.1') {
+    if (in_array($criteria, ['3.1', '3.2.1', '3.2.2', '3.3.1', '3.3.2'])) {
+        $table = 'nba_criterion_' . str_replace('.', '', $criteria);
+        $stmt = $pdo->query("SELECT * FROM $table ORDER BY academic_year DESC");
+        $response = ['success' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
+    }
+    elseif ($criteria === '4.1') {
         $stmt = $pdo->query("SELECT * FROM nba_enrollment_41 ORDER BY academic_year DESC");
         $response = ['success' => true, 'data' => $stmt->fetchAll(PDO::FETCH_ASSOC)];
     } 

@@ -328,8 +328,11 @@ $criteria = [
         "2.2.5 - Initiatives related to industry internship/summer training (10)"
     ],
     "3 - Course Outcomes (CO) & PO Mapping" => [
-        "3.1 - CO Attainment",
-        "3.2 - PO Mapping",
+        "3.1 - Establish the correlation between the courses and the POs & PSOs (10)",
+        "3.2.1 - Assessment tools and processes (COs) (10)",
+        "3.2.2 - Attainment of Course Outcomes (10)",
+        "3.3.1 - Assessment tools and processes (POs & PSOs) (10)",
+        "3.3.2 - Provide results of evaluation of each PO & PSO (20)"
     ],
     "4 - Student Performance" => [
         "4.1 - Enrollment Ratio (20)",
@@ -340,14 +343,6 @@ $criteria = [
         "4.5.1 - Professional Chapters and Events (5)",
         "4.5.2 - Publications (Magazine/Newsletter) (5)",
         "4.5.3 - Student Participation in Events (10)"
-    ],
-
-
-
-
-    "3 - Course Outcomes (CO) & PO Mapping" => [
-        "3.1 - CO Attainment",
-        "3.2 - PO Mapping",
     ],
 
     "5 - Faculty Information" => [
@@ -379,6 +374,16 @@ $criteria = [
         "7.2 - Academic Audit and Improvements (15)",
         "7.3 - Placement, Higher Studies and Entrepreneurship (10)",
         "7.4 - Quality of Admitted Students (20)",
+    ],
+
+    "8 - First Year Academics" => [
+        "8.1 - First Year Student-Faculty Ratio (FYSFR) (5)",
+        "8.2 - Qualification of Faculty Teaching First Year Common Courses (5)",
+        "8.3 - First Year Academic Performance (10)",
+        "8.4.1 - Description of Assessment Processes (5)",
+        "8.4.2 - Attainment of Course Outcomes (5)",
+        "8.5.1 - Evaluation of POs/PSOs (10)",
+        "8.5.2 - Actions Taken based on PO/PSO Evaluation (10)",
     ]
 ];
 ?>
