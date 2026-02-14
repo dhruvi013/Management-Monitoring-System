@@ -394,6 +394,13 @@ $criteria = [
         "9.5 - Career Guidance, Training, Placement (10)",
         "9.6 - Entrepreneurship Cell (5)",
         "9.7 - Co-curricular and Extra-curricular Activities (10)"
+    ],
+
+    "10 - Organization, Governance and Financial Resources" => [
+        "10.1 - Organization, Governance and Transparency (40)",
+        "10.2 - Budget Allocation, Utilization, and Public Accounting at Institute level (30)",
+        "10.3 - Program Specific Budget Allocation, Utilization (30)",
+        "10.4 - Library and Internet (20)"
     ]
 ];
 ?>
