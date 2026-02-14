@@ -384,6 +384,16 @@ $criteria = [
         "8.4.2 - Attainment of Course Outcomes (5)",
         "8.5.1 - Evaluation of POs/PSOs (10)",
         "8.5.2 - Actions Taken based on PO/PSO Evaluation (10)",
+    ],
+
+    "9 - Student Support Systems" => [
+        "9.1 - Mentoring system to help at individual level (5)",
+        "9.2 - Feedback analysis and reward /corrective measures taken (10)",
+        "9.3 - Feedback on facilities (5)",
+        "9.4 - Self - Learning (5)",
+        "9.5 - Career Guidance, Training, Placement (10)",
+        "9.6 - Entrepreneurship Cell (5)",
+        "9.7 - Co-curricular and Extra-curricular Activities (10)"
     ]
 ];
 ?>
